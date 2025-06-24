@@ -8,7 +8,7 @@
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.4.549">
+  <meta name="generator" content="quarto-1.5.57">
 
   <meta name="author" content="Mariana Montes">
   <title>R Best Practices</title>
@@ -42,7 +42,7 @@
     }
     @media print {
     pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
     }
     pre.numberSource code
       { counter-reset: source-line 0; }
@@ -70,7 +70,7 @@
     code span.at { color: #657422; } /* Attribute */
     code span.bn { color: #ad0000; } /* BaseN */
     code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
     code span.ch { color: #20794d; } /* Char */
     code span.cn { color: #8f5902; } /* Constant */
     code span.co { color: #5e5e5e; } /* Comment */
@@ -84,7 +84,7 @@
     code span.fu { color: #4758ab; } /* Function */
     code span.im { color: #00769e; } /* Import */
     code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; } /* Keyword */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
     code span.op { color: #5e5e5e; } /* Operator */
     code span.ot { color: #003b4f; } /* Other */
     code span.pp { color: #ad0000; } /* Preprocessor */
@@ -509,8 +509,7 @@ Mariana Montes
 <li><p>Paths relative to the root of a project</p></li>
 </ul>
 <p><img data-src="img/rproj.png" width="150"></p>
-</div>
-</div>
+</div></div>
 <div class="footer">
 <p><a href="https://www.tidyverse.org/blog/2017/12/workflow-vs-script/">Project oriented workflows</a></p>
 </div>
@@ -544,8 +543,7 @@ Mariana Montes
 <figcaption>Illustration by Allison Horst.</figcaption>
 </figure>
 </div>
-</div>
-</div>
+</div></div>
 <aside class="notes">
 <ol type="1">
 <li>Nothing happens as long as the path is the path of this file relative to the root of the project.</li>
@@ -577,6 +575,8 @@ Mariana Montes
 <li><p>Version control: keep track of the changes in your code, data, output…</p></li>
 <li><p>Share and collaborate via GitLab, Github…</p></li>
 </ul>
+</div><div>
+
 </div><div class="column quarto-layout-panel" data-layout="[[100], [45,45]]" style="width:40%;">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
@@ -591,8 +591,7 @@ Mariana Montes
 <p><img data-src="img/gitlab-logo-500.png"></p>
 </div>
 </div>
-</div>
-</div>
+</div></div>
 <div class="footer">
 <p><a href="https://happygitwithr.com/">Happy Git With R</a></p>
 </div>
@@ -636,8 +635,7 @@ Mariana Montes
 </div>
 </div><div class="column" style="width:25%;">
 <p><img data-src="https://raw.githubusercontent.com/rstudio/renv/main/man/figures/logo.svg" height="150"></p>
-</div>
-</div>
+</div></div>
 <aside class="notes">
 <p>R users don’t deal with different versions of R packages like Python users do with Python modules, since they are mostly centrally managed by CRAN or other repositories. But it can still be useful practice in some case, “if you really care about reproducibility” (in Hadley Wickham’s words).</p>
 <style type="text/css">
@@ -720,7 +718,7 @@ Mariana Montes
 <span id="cb9-13"><a></a>}</span>
 <span id="cb9-14"><a></a><span class="co">#&gt; Error in eval(expr, envir, enclos): object 'delay_categories' not found</span></span>
 <span id="cb9-15"><a></a>delay_categories <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Early"</span>, <span class="st">"Kind of on time"</span>, <span class="st">"Late"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><sup>Created on 2024-09-24 with <a href="https://reprex.tidyverse.org">reprex v2.1.0</a></sup></p>
+<p><sup>Created on 2025-06-24 with <a href="https://reprex.tidyverse.org">reprex v2.1.0</a></sup></p>
 </div>
 </div>
 </div>
@@ -735,8 +733,7 @@ Mariana Montes
 </ul>
 </div><div class="column" style="width:70%;">
 <p><img data-src="img/breakpoint.png" class="shaded"></p>
-</div>
-</div>
+</div></div>
 </section>
 <section id="tips-for-r-scripts" class="slide level2">
 <h2>Tips for R scripts</h2>
@@ -745,8 +742,7 @@ Mariana Montes
 <p><img data-src="img/source-screenshot.png" class="shaded"></p>
 </div><div class="column" style="width:40%;">
 <p><img data-src="img/clean-session.png" class="shaded"></p>
-</div>
-</div>
+</div></div>
 <aside class="notes">
 <p>Tips include:</p>
 <ul>
@@ -821,8 +817,7 @@ Mariana Montes
 </div><div class="column" style="width:50%;">
 <h3 id="with-spaces">With spaces</h3>
 <p>A panda comes into a bar</p>
-</div>
-</div>
+</div></div>
 <div class="fragment">
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -831,8 +826,7 @@ Mariana Montes
 </div><div class="column" style="width:50%;">
 <h3 id="with-commas">With commas</h3>
 <p>…eats, shoots, and leaves.</p>
-</div>
-</div>
+</div></div>
 </div>
 <div class="fragment">
 <h3 id="example-1">Example</h3>
@@ -866,8 +860,7 @@ Mariana Montes
 <li>Difference between <code>[]</code> and <code>[[]]</code>.</li>
 <li>Pay attention to indentation!</li>
 </ul>
-</div>
-</div>
+</div></div>
 <aside><ol class="aside-footnotes"><li id="fn1"><p>Use <code>Alt+-</code> / <code>⌥+-</code>!</p></li></ol></aside></section>
 <section id="improved-example-1" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Improved example</h2>
@@ -1189,11 +1182,11 @@ Mariana Montes
 <pre><code># A tibble: 10 × 2
    dep_delay dep_delay_cat  
        &lt;dbl&gt; &lt;chr&gt;          
- 1        -5 We have a value
- 2        63 We have a value
- 3         3 We have a value
- 4       -12 We have a value
- 5        51 We have a value
+ 1        -2 We have a value
+ 2       179 We have a value
+ 3        -5 We have a value
+ 4        -2 We have a value
+ 5         2 We have a value
  6        NA &lt;NA&gt;           
  7        NA &lt;NA&gt;           
  8        NA &lt;NA&gt;           
@@ -1252,8 +1245,7 @@ Mariana Montes
 <span id="cb41-9"><a></a>    some_flights[i, <span class="st">"dep_delay_cat"</span>] <span class="ot">&lt;-</span> <span class="st">"Late"</span></span>
 <span id="cb41-10"><a></a>  }</span>
 <span id="cb41-11"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
+</div></div>
 </section>
 <section id="improved-example-8" class="slide level2">
 <h2>Improved example</h2>
@@ -1462,8 +1454,7 @@ Mariana Montes
 1.5,2.2,3
 4,5,6
 7,8,9</code></pre>
-</div>
-</div>
+</div></div>
 <hr>
 <div class="columns">
 <div class="column">
@@ -1478,12 +1469,11 @@ Mariana Montes
 1,5 something;semicolon 3
 text,with,commas    wha a a t   6
 7   8   9</code></pre>
-</div>
-</div>
+</div></div>
 </section>
 <section id="rds-.rda-.rdata-other-formats" class="slide level2 smaller">
 <h2>.rds, .rda, .Rdata, other formats</h2>
-<table>
+<table class="caption-top">
 <colgroup>
 <col style="width: 16%">
 <col style="width: 16%">
@@ -1551,8 +1541,7 @@ text,with,commas    wha a a t   6
 <span id="cb59-15"><a></a><span class="in">```{r}</span></span>
 <span id="cb59-16"><a></a><span class="in">knitr::kable(my_data)</span></span>
 <span id="cb59-17"><a></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
+</div></div>
 </section>
 <section id="exercise-4" class="slide level2" data-background-image="img/practice.jpg" data-background-opacity="0.2">
 <h2>Exercise</h2>
@@ -1580,8 +1569,7 @@ text,with,commas    wha a a t   6
 <li>Render the README.</li>
 <li>Link to GitHub with <code>usethis::use_github(protocol="ssh")</code>.</li>
 </ol>
-</div>
-</div>
+</div></div>
 <div class="footer">
 <p>Photo by <a href="https://unsplash.com/@laurenagray?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">LAUREN GRAY</a> on <a href="https://unsplash.com/photos/white-egg-on-white-textile-Zqh5l1JWs5M?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Unsplash</a></p>
 </div>
@@ -1830,42 +1818,80 @@ text,with,commas    wha a a t   6
       });
     </script>
     
+
     <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
+    
 
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
 
+    
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
+    
 
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
 
+    
+
       })();
+
     </script>
+
+    
 
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -1899,18 +1925,7 @@ text,with,commas    wha a a t   6
         }
         return false;
       }
-      const clipboard = new window.ClipboardJS('.code-copy-button', {
-        text: function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
-            }
-          }
-          return codeEl.innerText;
-        }
-      });
-      clipboard.on('success', function(e) {
+      const onCopySuccess = function(e) {
         // button target
         const button = e.trigger;
         // don't keep focus
@@ -1942,7 +1957,47 @@ text,with,commas    wha a a t   6
         }, 1000);
         // clear code selection
         e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
       });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp("https:\/\/hpcleuven\.github\.io\/R-best-practices\/");
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
       function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
         const config = {
           allowHTML: true,
@@ -1979,7 +2034,11 @@ text,with,commas    wha a a t   6
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
-          return note.innerHTML;
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
         });
       }
           let selectedAnnoteEl;

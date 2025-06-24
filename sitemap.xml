@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://hpcleuven.github.io/R-best-practices/ssh-instructions/index.html</loc>
-    <lastmod>2024-09-24T09:09:59.054Z</lastmod>
+    <loc>https://hpcleuven.github.io/R-best-practices/slides/index.html</loc>
+    <lastmod>2024-07-05T07:31:48.039Z</lastmod>
   </url>
   <url>
     <loc>https://hpcleuven.github.io/R-best-practices/index.html</loc>
-    <lastmod>2024-09-24T09:09:59.024Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hpcleuven.github.io/R-best-practices/slides/index.html</loc>
-    <lastmod>2024-09-17T07:20:13.439Z</lastmod>
+    <lastmod>2025-06-24T07:26:26.870Z</lastmod>
   </url>
 </urlset>
