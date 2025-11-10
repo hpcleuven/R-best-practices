@@ -28,7 +28,7 @@ When you complete this training you will
 
 # Schedule
 
-Total duration: 3 hours
+Total duration: 4 hours
 
 # Training materials
 
@@ -42,9 +42,9 @@ Total duration: 3 hours
 
 # Prerequisites
 
-You will need some experience with R, and **a GitHub account**.
+You will need some experience with R, an RStudio installation and **a GitHub account**.
 
-You will be provided with a temporary [VSC](https://www.vscentrum.be/) account with access for one day.
+<!-- You will be provided with a temporary [VSC](https://www.vscentrum.be/) account with access for one day. -->
 
 # Trainers
 
