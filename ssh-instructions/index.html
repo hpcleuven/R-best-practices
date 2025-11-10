@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>R Best Practices</title>
+<title>Creating and linking an SSH key – R Best Practices</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,22 +23,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -77,7 +77,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">R Best Practices</span>
     </a>
   </div>
@@ -88,15 +88,15 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./slides/index.html"> 
+    <a class="nav-link" href="../slides/index.html"> 
 <span class="menu-text">Slides</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./ssh-instructions/index.html"> 
+    <a class="nav-link active" href="../ssh-instructions/index.html" aria-current="page"> 
 <span class="menu-text">SSH key</span></a>
   </li>  
 </ul>
@@ -115,20 +115,19 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link active" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
-  <li><a href="#schedule" id="toc-schedule" class="nav-link" data-scroll-target="#schedule">Schedule</a></li>
-  <li><a href="#training-materials" id="toc-training-materials" class="nav-link" data-scroll-target="#training-materials">Training materials</a></li>
-  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites">Prerequisites</a></li>
-  <li><a href="#trainers" id="toc-trainers" class="nav-link" data-scroll-target="#trainers">Trainers</a></li>
+  <li><a href="#vsc-specific-instructions" id="toc-vsc-specific-instructions" class="nav-link active" data-scroll-target="#vsc-specific-instructions">VSC-specific instructions</a></li>
+  <li><a href="#from-the-rstudio-side" id="toc-from-the-rstudio-side" class="nav-link" data-scroll-target="#from-the-rstudio-side">From the RStudio side</a></li>
+  <li><a href="#from-the-github-side" id="toc-from-the-github-side" class="nav-link" data-scroll-target="#from-the-github-side">From the GitHub side</a></li>
+  <li><a href="#clone-a-repositoryproject-with-ssh" id="toc-clone-a-repositoryproject-with-ssh" class="nav-link" data-scroll-target="#clone-a-repositoryproject-with-ssh">Clone a repository/project with SSH</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/hpcleuven/R-best-practices/blob/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/hpcleuven/R-best-practices/blob/main/ssh-instructions/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">R Best Practices</h1>
+<h1 class="title">Creating and linking an SSH key</h1>
 </div>
 
 
@@ -140,53 +139,86 @@ ul.task-list li input[type="checkbox"] {
     
   </div>
   
+<div>
+  <div class="abstract">
+    <div class="block-title">Abstract</div>
+    <p>In this document we will learn how to create an SSH Key with RStudio and how to link it to a GitHub account. This way you can safely authenticate when pushing changes to your repository.</p>
+  </div>
+</div>
 
 
 </header>
 
 
-<p>The goal of this training is to build better practices with programming in R, in order to enhance your productivity in research, and to minimize the time you spend on fixing, rewriting and debugging your R scripts.</p>
-<p>To achieve this, you will learn how to start using R projects, and how to integrate version control with Github into your projects.</p>
-<p>We’ll look at syntax conventions and debugging tools, and we practice upgrading quick-and-dirty scripts to versatile R code.</p>
-<p>To this end, we explain the theory and provide examples and hands-on to consolidate best practices in R.</p>
-<p>The idea is to learn how to create clean, readable, versatile and reproducible R workflows, which help boosting your scientific productivity and collaboration.</p>
-<section id="learning-outcomes" class="level1">
-<h1>Learning outcomes</h1>
-<p>When you complete this training you will</p>
-<ul>
-<li>know how to create and use R projects</li>
-<li>be able to store or publish your R project in GitHub</li>
-<li>be able to debug your code with R Studio tools</li>
-<li>know how to make your code reproducible and communicate it</li>
-<li>have an idea of style guidelines and their importance</li>
-<li>be able to make your code cleaner, more compact and more readable</li>
-<li>know the difference between some useful file formats</li>
-<li>know about literate programming</li>
-</ul>
+<p>This document starts from the assumption that you have a temporary VSC account, which provides you access to Open OnDemand and therefore to RStudio, and a GitHub account that you want to connect to. Most of the instructions are also valid for a local RStudio installation and to connect to any other platform that accepts SSH authentication.</p>
+<section id="vsc-specific-instructions" class="level2">
+<h2 class="anchored" data-anchor-id="vsc-specific-instructions">VSC-specific instructions</h2>
+<p>In order to access RStudio in Open OnDemand, go to https://ondemand.hpc.kuleuven.be, which will redirect you to <a href="https://auth.vscentrum.be/auth/login">the VSC Login Page</a>. Here you should enter your temporary credentials (username and password) in the appropriate input fields:</p>
+<p><img src="./img/tmp-login.png" class="shaded img-fluid"></p>
+<p>Then select RStudio Server from the pinned apps:</p>
+<p><img src="./img/select-rstudio.png" class="shaded img-fluid"></p>
+<p>This will take you to a form to request a job: select the “wice” cluster and a number of hours that includes the duration of the course, so that you don’t need to request a new job later during the course. The rest of the values can be left on their default: “lp_vsctmp” account, “interactive” partition…</p>
+<p><img src="./img/request-job.png" class="shaded img-fluid"></p>
+<p>Wait for the job to start, and once it’s ready, click on “Connect to RStudio Server”, which will take you to RStudio.</p>
+<p><img src="./img/session-start.png" class="shaded img-fluid"></p>
 </section>
-<section id="schedule" class="level1">
-<h1>Schedule</h1>
-<p>Total duration: 3 hours</p>
+<section id="from-the-rstudio-side" class="level2">
+<h2 class="anchored" data-anchor-id="from-the-rstudio-side">From the RStudio side</h2>
+<p>In RStudio, go to “Tools” &gt; “Global Options”, and in the pop-up window go to the “Git/SVN” tab from the left sidebar.</p>
+<p><img src="./img/ssh-key-start.png" class="shaded img-fluid"></p>
+<p>Under the “SSK key” field, which should be empty, click on “Create SSH Key…”. This will open a new pop-up window showing the path to where the SSH key will be created and boxes to input an optional passphrase and confirm it. Please provide a passphrase: this is what you will have to input when you confirm actions that require the SSH key. Also make sure to select the SSH key type “ED25519” if it is not selected already.</p>
+<p><img src="./img/ssh-key-create.png" class="shaded img-fluid"></p>
+<p>Clicking on “Create” will result in a window confirming it has been created, the paths to the private and public keys, the fingerprint and its randomart. You may just close the window.</p>
+<p>You have now an SSH key pair that you can use to connect RStudio in HPC with GitHub, congratulations! The next step is to give the public key to GitHub, which is then used to decode the private key when RStudio sends instructions to it. Now that you have created the key, you can always retrieve the public key from the same window used to create it:</p>
+<p><img src="./img/ssh-key-view.png" class="shaded img-fluid"></p>
+<p>When you do close the “Options” window, don’t forget to click on “Apply” first!</p>
 </section>
-<section id="training-materials" class="level1">
-<h1>Training materials</h1>
-<ul>
-<li>You will need to <a href="https://github.com/hpcleuven/R-best-practices">fork the repository of the course</a>.</li>
-</ul>
+<section id="from-the-github-side" class="level2">
+<h2 class="anchored" data-anchor-id="from-the-github-side">From the GitHub side</h2>
+<p>In <a href="https://github.com">github.com</a>, go to your Settings page (by selecting it in the menu that stems from your profile picture, on the top right corner), and once there select “SSH and GPG keys” from the left side bar (the “Access” section). On the right side you can then click on “New SSH key”:</p>
+<p><img src="./img/ssh-key-new.png" class="shaded img-fluid"></p>
+<p>This will take you to a small form to input a “Title” (a recognizable name that distinguish this key from other keys you may add, e.g.&nbsp;to another RStudio installation) and the “Key” itself. In that last field, paste the public key you can copy from RStudio. The, click on “Add SSH Key”. Because I use the GitHub App for 2-Factor Authentication, I have to authorize this action via that app. You may have another way to provide authorization.</p>
+<p><img src="./img/ssh-key-public.png" class="shaded img-fluid"></p>
+<p>Once the key has been added it will show up in the list of authentication keys, and you are set :)</p>
+<p>For more information on connecting to GitHub with SSH, please read the <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh">documentation</a>.</p>
+</section>
+<section id="clone-a-repositoryproject-with-ssh" class="level2">
+<h2 class="anchored" data-anchor-id="clone-a-repositoryproject-with-ssh">Clone a repository/project with SSH</h2>
+<p>When you want to clone an R project from GitHub, you may use the SSH url. You can obtain it from the appropriate tab in the “Code” dropdown of a repository on GitHub. Remember to clone your fork!</p>
+<p><img src="./img/repo-copy-url.png" class="shaded img-fluid"></p>
+<p>How do you create a project by cloning a repository? On the top right corner of R Studio, there is a small dropdown that can be used to open or create a new project.</p>
+<p><img src="./img/project-none.png" class="shaded img-fluid"></p>
+<p>Clicking on “New Project” will take you to the “New Project Wizard”, from which you can create one from scratch, or from an existing directory, or “from Version Control”. Select the last option, and then “Git” as the Version Control tool.</p>
 <div>
-<iframe class="slide-deck" src="slides/index.html"></iframe>
+
 </div>
-</section>
-<section id="prerequisites" class="level1">
-<h1>Prerequisites</h1>
-<p>You will need some experience with R, and <strong>a GitHub account</strong>.</p>
-<p>You will be provided with a temporary <a href="https://www.vscentrum.be/">VSC</a> account with access for one day.</p>
-</section>
-<section id="trainers" class="level1">
-<h1>Trainers</h1>
-<ul>
-<li>Mariana Montes (<a href="mailto:mariana.montes@kuleuven.be">mariana.montes@kuleuven.be</a>)</li>
-</ul>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="./img/new-project-wizard.png" class="shaded img-fluid"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="./img/choose-git.png" class="shaded img-fluid"></p>
+</div>
+</div>
+</div>
+<p>Then when you create a new project by cloning a repository, that is the URL you provide (instead of the “https” one):</p>
+<p><img src="./img/repo-clone.png" class="shaded img-fluid"></p>
+<p>The first time you use the SSH key, you will need to confirm that you accept the connection. Other than that, normally you will just need to input the passphrase:</p>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="./img/fingerprint-request.png" class="shaded img-fluid"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="./img/repo-authenticate.png" class="shaded img-fluid"></p>
+</div>
+</div>
+</div>
+<p>Good luck!</p>
 
 
 </section>
@@ -617,4 +649,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/hpcleuven/R-best-practices/blob/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/hpcleuven/R-best-practices/blob/main/ssh-instructions/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>

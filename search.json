@@ -32,7 +32,7 @@
     "href": "slides/index.html#git",
     "title": "R Best Practices",
     "section": "git",
-    "text": "git\n\n\n\nR projects can be git repositories\nVersion control: keep track of the changes in your code, data, output…\nShare and collaborate via GitLab, Github…\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHappy Git With R"
+    "text": "git\n\n\n\nR projects can be git repositories\nVersion control: keep track of the changes in your code, data, output…\nShare and collaborate via GitLab, Github…\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHappy Git With R"
   },
   {
     "objectID": "slides/index.html#renv",
@@ -67,7 +67,7 @@
     "href": "slides/index.html#section-1",
     "title": "R Best Practices",
     "section": "",
-    "text": "sth_is_wrong_reprex.md is created\n\n\nlibrary(nycflights13)\ndf &lt;- head(flights)\nfor (i in 1:length(df$dep_delay)) {\n  if (is.na(df$dep_delay[[i]])) {\n    df[i, \"dep_delay_cat\"] &lt;- NA\n  } else if(df$dep_delay[[i]] &lt; -30) {\n    df[i, \"dep_delay_cat\"] &lt;- delay_categories[[1]]\n  } else if(df$dep_delay[[i]] &lt; 30) {\n    df[i, \"dep_delay_cat\"] &lt;- delay_categories[[2]]\n  } else {\n    df[i, \"dep_delay_cat\"] &lt;- delay_categories[[3]]\n  }\n}\n#&gt; Error in eval(expr, envir, enclos): object 'delay_categories' not found\ndelay_categories &lt;- c(\"Early\", \"Kind of on time\", \"Late\")\nCreated on 2025-06-24 with reprex v2.1.0"
+    "text": "sth_is_wrong_reprex.md is created\n\n\nlibrary(nycflights13)\ndf &lt;- head(flights)\nfor (i in 1:length(df$dep_delay)) {\n  if (is.na(df$dep_delay[[i]])) {\n    df[i, \"dep_delay_cat\"] &lt;- NA\n  } else if(df$dep_delay[[i]] &lt; -30) {\n    df[i, \"dep_delay_cat\"] &lt;- delay_categories[[1]]\n  } else if(df$dep_delay[[i]] &lt; 30) {\n    df[i, \"dep_delay_cat\"] &lt;- delay_categories[[2]]\n  } else {\n    df[i, \"dep_delay_cat\"] &lt;- delay_categories[[3]]\n  }\n}\n#&gt; Error in eval(expr, envir, enclos): object 'delay_categories' not found\ndelay_categories &lt;- c(\"Early\", \"Kind of on time\", \"Late\")\nCreated on 2025-11-10 with reprex v2.1.0"
   },
   {
     "objectID": "slides/index.html#interactive-debugging",
@@ -235,7 +235,7 @@
     "href": "slides/index.html#if_else",
     "title": "R Best Practices",
     "section": "if_else()",
-    "text": "if_else()\n\nsome_flights |&gt; \n  mutate(dep_delay_cat = if_else(is.na(dep_delay), NA, \"We have a value\")) |&gt; \n  slice_sample(n = 5, by = dep_delay_cat) |&gt; \n  select(starts_with(\"dep_delay\"))\n\n# A tibble: 10 × 2\n   dep_delay dep_delay_cat  \n       &lt;dbl&gt; &lt;chr&gt;          \n 1        -2 We have a value\n 2       179 We have a value\n 3        -5 We have a value\n 4        -2 We have a value\n 5         2 We have a value\n 6        NA &lt;NA&gt;           \n 7        NA &lt;NA&gt;           \n 8        NA &lt;NA&gt;           \n 9        NA &lt;NA&gt;           \n10        NA &lt;NA&gt;"
+    "text": "if_else()\n\nsome_flights |&gt; \n  mutate(dep_delay_cat = if_else(is.na(dep_delay), NA, \"We have a value\")) |&gt; \n  slice_sample(n = 5, by = dep_delay_cat) |&gt; \n  select(starts_with(\"dep_delay\"))\n\n# A tibble: 10 × 2\n   dep_delay dep_delay_cat  \n       &lt;dbl&gt; &lt;chr&gt;          \n 1        -7 We have a value\n 2        -3 We have a value\n 3       -11 We have a value\n 4         5 We have a value\n 5        -8 We have a value\n 6        NA &lt;NA&gt;           \n 7        NA &lt;NA&gt;           \n 8        NA &lt;NA&gt;           \n 9        NA &lt;NA&gt;           \n10        NA &lt;NA&gt;"
   },
   {
     "objectID": "slides/index.html#case_when",
@@ -291,14 +291,14 @@
     "href": "slides/index.html#multiple-columns-at-once-2",
     "title": "R Best Practices",
     "section": "Multiple columns at once",
-    "text": "Multiple columns at once\nsome_flights |&gt; \n  mutate(\n    across(ends_with(\"delay\"),\n    ~ case_when(\n      is.na(dep_delay) ~ NA,\n      dep_delay &lt; -30 ~ \"Early\",\n      dep_delay &lt; 30 ~ \"Kind of on time\",\n      TRUE ~ \"Late\"\n    ) |&gt; as.factor(),\n    .names = \"{.col}_cat\"\n  )"
+    "text": "Multiple columns at once\nsome_flights |&gt; \n  mutate(\n    across(ends_with(\"delay\"),\n    ~ case_when(\n      is.na(.x) ~ NA,\n      .x &lt; -30 ~ \"Early\",\n      .x &lt; 30 ~ \"Kind of on time\",\n      TRUE ~ \"Late\"\n    ) |&gt; as.factor(),\n    .names = \"{.col}_cat\"\n  )"
   },
   {
     "objectID": "slides/index.html#multiple-columns-at-once-3",
     "href": "slides/index.html#multiple-columns-at-once-3",
     "title": "R Best Practices",
     "section": "Multiple columns at once",
-    "text": "Multiple columns at once\nsome_flights |&gt; \n  mutate(\n    across(ends_with(\"delay\"),\n    ~ case_when(\n      is.na(dep_delay) ~ NA,\n      dep_delay &lt; -30 ~ \"Early\",\n      dep_delay &lt; 30 ~ \"Kind of on time\",\n      TRUE ~ \"Late\"\n    ) |&gt; factor(levels = c(\"Early\", \"Kind of on time\", \"Late\")),\n    .names = \"{.col}_cat\"\n  )"
+    "text": "Multiple columns at once\nsome_flights |&gt; \n  mutate(\n    across(ends_with(\"delay\"),\n    ~ case_when(\n      is.na(.x) ~ NA,\n      .x &lt; -30 ~ \"Early\",\n      .x &lt; 30 ~ \"Kind of on time\",\n      TRUE ~ \"Late\"\n    ) |&gt; factor(levels = c(\"Early\", \"Kind of on time\", \"Late\")),\n    .names = \"{.col}_cat\"\n  )"
   },
   {
     "objectID": "slides/index.html#multiple-columns-at-once-4",
@@ -364,10 +364,45 @@
     "text": "Online books\n\nR for Data Science (2e)\nAdvanced R\nHappy Git and Github for the useR\n\nBlogposts\n\nTidyverse styleguide\nProject oriented workflows\nA project from scratch \n\nYouTube\n\nJenny Bryan | Object of type ‘closure’ is not subsettable\nHadley Wickham | The Joy of functional programming"
   },
   {
+    "objectID": "ssh-instructions/index.html",
+    "href": "ssh-instructions/index.html",
+    "title": "Creating and linking an SSH key",
+    "section": "",
+    "text": "This document starts from the assumption that you have a temporary VSC account, which provides you access to Open OnDemand and therefore to RStudio, and a GitHub account that you want to connect to. Most of the instructions are also valid for a local RStudio installation and to connect to any other platform that accepts SSH authentication."
+  },
+  {
+    "objectID": "ssh-instructions/index.html#vsc-specific-instructions",
+    "href": "ssh-instructions/index.html#vsc-specific-instructions",
+    "title": "Creating and linking an SSH key",
+    "section": "VSC-specific instructions",
+    "text": "VSC-specific instructions\nIn order to access RStudio in Open OnDemand, go to https://ondemand.hpc.kuleuven.be, which will redirect you to the VSC Login Page. Here you should enter your temporary credentials (username and password) in the appropriate input fields:\n\nThen select RStudio Server from the pinned apps:\n\nThis will take you to a form to request a job: select the “wice” cluster and a number of hours that includes the duration of the course, so that you don’t need to request a new job later during the course. The rest of the values can be left on their default: “lp_vsctmp” account, “interactive” partition…\n\nWait for the job to start, and once it’s ready, click on “Connect to RStudio Server”, which will take you to RStudio."
+  },
+  {
+    "objectID": "ssh-instructions/index.html#from-the-rstudio-side",
+    "href": "ssh-instructions/index.html#from-the-rstudio-side",
+    "title": "Creating and linking an SSH key",
+    "section": "From the RStudio side",
+    "text": "From the RStudio side\nIn RStudio, go to “Tools” &gt; “Global Options”, and in the pop-up window go to the “Git/SVN” tab from the left sidebar.\n\nUnder the “SSK key” field, which should be empty, click on “Create SSH Key…”. This will open a new pop-up window showing the path to where the SSH key will be created and boxes to input an optional passphrase and confirm it. Please provide a passphrase: this is what you will have to input when you confirm actions that require the SSH key. Also make sure to select the SSH key type “ED25519” if it is not selected already.\n\nClicking on “Create” will result in a window confirming it has been created, the paths to the private and public keys, the fingerprint and its randomart. You may just close the window.\nYou have now an SSH key pair that you can use to connect RStudio in HPC with GitHub, congratulations! The next step is to give the public key to GitHub, which is then used to decode the private key when RStudio sends instructions to it. Now that you have created the key, you can always retrieve the public key from the same window used to create it:\n\nWhen you do close the “Options” window, don’t forget to click on “Apply” first!"
+  },
+  {
+    "objectID": "ssh-instructions/index.html#from-the-github-side",
+    "href": "ssh-instructions/index.html#from-the-github-side",
+    "title": "Creating and linking an SSH key",
+    "section": "From the GitHub side",
+    "text": "From the GitHub side\nIn github.com, go to your Settings page (by selecting it in the menu that stems from your profile picture, on the top right corner), and once there select “SSH and GPG keys” from the left side bar (the “Access” section). On the right side you can then click on “New SSH key”:\n\nThis will take you to a small form to input a “Title” (a recognizable name that distinguish this key from other keys you may add, e.g. to another RStudio installation) and the “Key” itself. In that last field, paste the public key you can copy from RStudio. The, click on “Add SSH Key”. Because I use the GitHub App for 2-Factor Authentication, I have to authorize this action via that app. You may have another way to provide authorization.\n\nOnce the key has been added it will show up in the list of authentication keys, and you are set :)\nFor more information on connecting to GitHub with SSH, please read the documentation."
+  },
+  {
+    "objectID": "ssh-instructions/index.html#clone-a-repositoryproject-with-ssh",
+    "href": "ssh-instructions/index.html#clone-a-repositoryproject-with-ssh",
+    "title": "Creating and linking an SSH key",
+    "section": "Clone a repository/project with SSH",
+    "text": "Clone a repository/project with SSH\nWhen you want to clone an R project from GitHub, you may use the SSH url. You can obtain it from the appropriate tab in the “Code” dropdown of a repository on GitHub. Remember to clone your fork!\n\nHow do you create a project by cloning a repository? On the top right corner of R Studio, there is a small dropdown that can be used to open or create a new project.\n\nClicking on “New Project” will take you to the “New Project Wizard”, from which you can create one from scratch, or from an existing directory, or “from Version Control”. Select the last option, and then “Git” as the Version Control tool.\n\n\n\n\n\n\n\n\n\n\n\n\n\nThen when you create a new project by cloning a repository, that is the URL you provide (instead of the “https” one):\n\nThe first time you use the SSH key, you will need to confirm that you accept the connection. Other than that, normally you will just need to input the passphrase:\n\n\n\n\n\n\n\n\n\n\n\n\n\nGood luck!"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "R Best Practices",
     "section": "",
-    "text": "The goal of this training is to build better practices with programming in R, in order to enhance your productivity in research, and to minimize the time you spend on fixing, rewriting and debugging your R scripts.\nTo achieve this, you will learn how to start using R projects, and how to integrate version control with Github into your projects.\nWe’ll look at syntax conventions and debugging tools, and we practice upgrading quick-and-dirty scripts to versatile R code.\nTo this end, we explain the theory and provide examples and hands-on to consolidate best practices in R.\nThe idea is to learn how to create clean, readable, versatile and reproducible R workflows, which help boosting your scientific productivity and collaboration.\n\nLearning outcomes\nWhen you complete this training you will\n\nknow how to create and use R projects\nbe able to store or publish your R project in GitHub\nbe able to debug your code with R Studio tools\nknow how to make your code reproducible and communicate it\nhave an idea of style guidelines and their importance\nbe able to make your code cleaner, more compact and more readable\nknow the difference between some useful file formats\nknow about literate programming\n\n\n\nSchedule\nTotal duration: 4 hours\n\n\nTraining materials\n\nYou will need to fork the repository of the course.\n\n\n\n\n\n\nPrerequisites\nYou will need some experience with R, and a GitHub account. You should also have R, R Studio and Git installed (or a vsc account and access to Open OnDemand).\n\n\nTrainers\n\nMariana Montes (mariana.montes@kuleuven.be)"
+    "text": "The goal of this training is to build better practices with programming in R, in order to enhance your productivity in research, and to minimize the time you spend on fixing, rewriting and debugging your R scripts.\nTo achieve this, you will learn how to start using R projects, and how to integrate version control with Github into your projects.\nWe’ll look at syntax conventions and debugging tools, and we practice upgrading quick-and-dirty scripts to versatile R code.\nTo this end, we explain the theory and provide examples and hands-on to consolidate best practices in R.\nThe idea is to learn how to create clean, readable, versatile and reproducible R workflows, which help boosting your scientific productivity and collaboration.\n\nLearning outcomes\nWhen you complete this training you will\n\nknow how to create and use R projects\nbe able to store or publish your R project in GitHub\nbe able to debug your code with R Studio tools\nknow how to make your code reproducible and communicate it\nhave an idea of style guidelines and their importance\nbe able to make your code cleaner, more compact and more readable\nknow the difference between some useful file formats\nknow about literate programming\n\n\n\nSchedule\nTotal duration: 3 hours\n\n\nTraining materials\n\nYou will need to fork the repository of the course.\n\n\n\n\n\n\nPrerequisites\nYou will need some experience with R, and a GitHub account.\nYou will be provided with a temporary VSC account with access for one day.\n\n\nTrainers\n\nMariana Montes (mariana.montes@kuleuven.be)"
   }
 ]

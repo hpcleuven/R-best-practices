@@ -2,10 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://hpcleuven.github.io/R-best-practices/slides/index.html</loc>
-    <lastmod>2024-07-05T07:31:48.039Z</lastmod>
+    <lastmod>2025-11-10T06:59:33.304Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hpcleuven.github.io/R-best-practices/ssh-instructions/index.html</loc>
+    <lastmod>2025-11-10T06:18:19.119Z</lastmod>
   </url>
   <url>
     <loc>https://hpcleuven.github.io/R-best-practices/index.html</loc>
-    <lastmod>2025-06-24T07:26:26.870Z</lastmod>
+    <lastmod>2025-11-10T06:18:19.062Z</lastmod>
   </url>
 </urlset>

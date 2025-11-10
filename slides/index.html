@@ -575,20 +575,19 @@ Mariana Montes
 <li><p>Version control: keep track of the changes in your code, data, output…</p></li>
 <li><p>Share and collaborate via GitLab, Github…</p></li>
 </ul>
-</div><div>
-
-</div><div class="column quarto-layout-panel" data-layout="[[100], [45,45]]" style="width:40%;">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+</div><div class="column" style="width:30%;">
 <p><img data-src="img/git.png"></p>
+<div>
+
 </div>
-</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <p><img data-src="img/github-mark.png"></p>
 </div>
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img data-src="img/gitlab-logo-500.png"></p>
+<p><img data-src="img/gitlab-logo-cropped.png"></p>
+</div>
 </div>
 </div>
 </div></div>
@@ -718,7 +717,7 @@ Mariana Montes
 <span id="cb9-13"><a></a>}</span>
 <span id="cb9-14"><a></a><span class="co">#&gt; Error in eval(expr, envir, enclos): object 'delay_categories' not found</span></span>
 <span id="cb9-15"><a></a>delay_categories <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Early"</span>, <span class="st">"Kind of on time"</span>, <span class="st">"Late"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><sup>Created on 2025-06-24 with <a href="https://reprex.tidyverse.org">reprex v2.1.0</a></sup></p>
+<p><sup>Created on 2025-11-10 with <a href="https://reprex.tidyverse.org">reprex v2.1.0</a></sup></p>
 </div>
 </div>
 </div>
@@ -1182,11 +1181,11 @@ Mariana Montes
 <pre><code># A tibble: 10 × 2
    dep_delay dep_delay_cat  
        &lt;dbl&gt; &lt;chr&gt;          
- 1        -2 We have a value
- 2       179 We have a value
- 3        -5 We have a value
- 4        -2 We have a value
- 5         2 We have a value
+ 1        -7 We have a value
+ 2        -3 We have a value
+ 3       -11 We have a value
+ 4         5 We have a value
+ 5        -8 We have a value
  6        NA &lt;NA&gt;           
  7        NA &lt;NA&gt;           
  8        NA &lt;NA&gt;           
@@ -1317,9 +1316,9 @@ Mariana Montes
 <span id="cb44-2" class="hljs-ln-code"><a></a>  <span class="fu">mutate</span>(</span>
 <span id="cb44-3" class="hljs-ln-code"><a></a>    <span class="fu">across</span>(<span class="fu">ends_with</span>(<span class="st">"delay"</span>),</span>
 <span id="cb44-4" class="hljs-ln-code"><a></a>    <span class="sc">~</span> <span class="fu">case_when</span>(</span>
-<span id="cb44-5" class="hljs-ln-code"><a></a>      <span class="fu">is.na</span>(dep_delay) <span class="sc">~</span> <span class="cn">NA</span>,</span>
-<span id="cb44-6" class="hljs-ln-code"><a></a>      dep_delay <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">30</span> <span class="sc">~</span> <span class="st">"Early"</span>,</span>
-<span id="cb44-7" class="hljs-ln-code"><a></a>      dep_delay <span class="sc">&lt;</span> <span class="dv">30</span> <span class="sc">~</span> <span class="st">"Kind of on time"</span>,</span>
+<span id="cb44-5" class="hljs-ln-code"><a></a>      <span class="fu">is.na</span>(.x) <span class="sc">~</span> <span class="cn">NA</span>,</span>
+<span id="cb44-6" class="hljs-ln-code"><a></a>      .x <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">30</span> <span class="sc">~</span> <span class="st">"Early"</span>,</span>
+<span id="cb44-7" class="hljs-ln-code"><a></a>      .x <span class="sc">&lt;</span> <span class="dv">30</span> <span class="sc">~</span> <span class="st">"Kind of on time"</span>,</span>
 <span id="cb44-8" class="hljs-ln-code"><a></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Late"</span></span>
 <span id="cb44-9" class="hljs-ln-code"><a></a>    ) <span class="sc">|&gt;</span> <span class="fu">as.factor</span>(),</span>
 <span id="cb44-10" class="hljs-ln-code"><a></a>    <span class="at">.names =</span> <span class="st">"{.col}_cat"</span></span>
@@ -1331,9 +1330,9 @@ Mariana Montes
 <span id="cb45-2" class="hljs-ln-code"><a></a>  <span class="fu">mutate</span>(</span>
 <span id="cb45-3" class="hljs-ln-code"><a></a>    <span class="fu">across</span>(<span class="fu">ends_with</span>(<span class="st">"delay"</span>),</span>
 <span id="cb45-4" class="hljs-ln-code"><a></a>    <span class="sc">~</span> <span class="fu">case_when</span>(</span>
-<span id="cb45-5" class="hljs-ln-code"><a></a>      <span class="fu">is.na</span>(dep_delay) <span class="sc">~</span> <span class="cn">NA</span>,</span>
-<span id="cb45-6" class="hljs-ln-code"><a></a>      dep_delay <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">30</span> <span class="sc">~</span> <span class="st">"Early"</span>,</span>
-<span id="cb45-7" class="hljs-ln-code"><a></a>      dep_delay <span class="sc">&lt;</span> <span class="dv">30</span> <span class="sc">~</span> <span class="st">"Kind of on time"</span>,</span>
+<span id="cb45-5" class="hljs-ln-code"><a></a>      <span class="fu">is.na</span>(.x) <span class="sc">~</span> <span class="cn">NA</span>,</span>
+<span id="cb45-6" class="hljs-ln-code"><a></a>      .x <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">30</span> <span class="sc">~</span> <span class="st">"Early"</span>,</span>
+<span id="cb45-7" class="hljs-ln-code"><a></a>      .x <span class="sc">&lt;</span> <span class="dv">30</span> <span class="sc">~</span> <span class="st">"Kind of on time"</span>,</span>
 <span id="cb45-8" class="hljs-ln-code"><a></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Late"</span></span>
 <span id="cb45-9" class="hljs-ln-code"><a></a>    ) <span class="sc">|&gt;</span> <span class="fu">factor</span>(<span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Early"</span>, <span class="st">"Kind of on time"</span>, <span class="st">"Late"</span>)),</span>
 <span id="cb45-10" class="hljs-ln-code"><a></a>    <span class="at">.names =</span> <span class="st">"{.col}_cat"</span></span>
