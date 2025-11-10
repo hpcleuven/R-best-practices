@@ -156,15 +156,18 @@ source(here("analysis", "model.R"))
 - Share and collaborate via GitLab, Github...
 
 :::
-::: {.column width="40%" layout="[[100], [45,45]]"}
+
+::: {.column width="30%"}
 
 
 ![](img/git.png)
 
+::: {layout-ncol=2}
 ![](img/github-mark.png)
 
-![](img/gitlab-logo-500.png)
+![](img/gitlab-logo-cropped.png)
 
+:::
 :::
 
 ::::
@@ -826,9 +829,9 @@ some_flights |>
   mutate(
     across(ends_with("delay"),
     ~ case_when(
-      is.na(dep_delay) ~ NA,
-      dep_delay < -30 ~ "Early",
-      dep_delay < 30 ~ "Kind of on time",
+      is.na(.x) ~ NA,
+      .x < -30 ~ "Early",
+      .x < 30 ~ "Kind of on time",
       TRUE ~ "Late"
     ) |> as.factor(),
     .names = "{.col}_cat"
@@ -842,9 +845,9 @@ some_flights |>
   mutate(
     across(ends_with("delay"),
     ~ case_when(
-      is.na(dep_delay) ~ NA,
-      dep_delay < -30 ~ "Early",
-      dep_delay < 30 ~ "Kind of on time",
+      is.na(.x) ~ NA,
+      .x < -30 ~ "Early",
+      .x < 30 ~ "Kind of on time",
       TRUE ~ "Late"
     ) |> factor(levels = c("Early", "Kind of on time", "Late")),
     .names = "{.col}_cat"
