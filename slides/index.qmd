@@ -8,6 +8,7 @@ title-slide-attributes:
   data-background-size: contain
   data-background-position: bottom
 author: Mariana Montes
+date: today
 execute:
   echo: true
 code-annotations: select
@@ -15,58 +16,30 @@ code-annotations: select
 
 ## Outline
 
-- Reproducibility & debugging
-    
+- Projects
+
+- Debugging
+
 - Style
 
-- Data wrangling
-    
+- The pipe and other data-wrangling tricks
+
 - I/O
 
-## Let's start with a bad example!
+# Projects
 
-```{r}
-#| eval: false
+## Discussion questions
 
-setwd("C:\\Users\\username\\My Projects\\R for best practices") # <1>
+1. Do you write scripts? Do you organize them in folders?
+	1. Do you use version control?
+	2. Do you back-up your scripts?
+2. Where do your scripts and data live?
+	1. Do you use absolute paths in their scripts?
+	2. Where does the input/output live in relation to the scripts?
+3. Do you work with others?
+	1. Do you share their code with others? With whom? How?
+	2. Do others share their code with you? Who? How?
 
-df<-read.csv( "Flight Subset 2013.csv")                         # <1>
-df$month_name = month.name[df$month]                            # <2>
-df$carrier <- as.factor(df$carrier)                             # <3>
-df$tailnum <- as.factor(df$tailnum)                             # <3>
-df$origin <- as.factor(df$origin)                               # <3>
-for(i in 1:length(df$dep_delay)){                               # <4>
-if(is.na(df$dep_delay[[i]])){                                   # <5>
-df[i, "dep_delay_cat"] <- NA                                    # <5>
-}else if(df$dep_delay[[i]] < -30){                              # <5>
-    df[i, "dep_delay_cat"] <- "Early"                           # <5>
-       }else if(df$dep_delay[[i]] < 30){                        # <5>
-    df[i, "dep_delay_cat"] <- "Kind of on time"                 # <5>
-  } else {                                                      # <5>
-    df[i, "dep_delay_cat"] <- "Late"                            # <5>
-  }                                                             # <5>
-}                                                               # <5>
-df$dep_delay_cat <- as.factor(df$dep_delay_cat)                 # <6>
-```
-
-1. Naming conventions
-2. Assignment operator
-3. Rewriting the same variable, and with the same operation!
-4. `1:length(x)` (and spaces)
-5. `for` loop to create a categorical variable (and spaces)
-6. Again 3!
-
-::: notes
-Also: not using the pipe
-:::
-
-# Reproducibility & debugging
-
-+ `{here}`: project-oriented workflow
-+ git
-+ `{renv}`: virtual environments
-+ `{reprex}`: Minimal **repr**oducible **ex**amples
-+ `browser()` and breakpoints
 
 ## {.smaller}
 
@@ -220,18 +193,17 @@ reproducibility" (in Hadley Wickham's words).
 ::: footer
 [`{renv}`](https://rstudio.github.io/renv/)
 :::
+		
+## Reflection
 
-## Exercise {background-image="img/practice.jpg" background-opacity="0.2"}
+# Debugging
 
-- Go to GitHub and fork the following repository: https://github.com/montesmariana/r-best-practices-exercises
-- From RStudio, create a new project from version control and provide the username and repository name of your fork
-- With the new project open in RStudio, restore the `{renv}` environment.
+## Discussion questions
 
-::: footer
+1. What do you do when your code fails? Where do you search for answers?
+2. How do you look into your code to find the problematic part? Or do you send your whole script to AI?
+3. Do you write your own functions?
 
-Photo by <a href="https://unsplash.com/@brett_jordan?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Brett Jordan</a> on <a href="https://unsplash.com/photos/brown-wooden-cross-on-white-surface-Fp4ERdkR5jU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-
-:::
 
 ## `{reprex}`: Minimal reproducible examples
 
@@ -342,32 +314,19 @@ environment (because you don't know what leftovers there are and how they can
 impact what you're doing next).
 :::
 
-## Exercise {background-image="img/practice.jpg" background-opacity="0.2"}
+## Reflection
 
-- Run the code in "script.R" and fix the bugs necessary for it to run well. Restart R every time you source the file.
-- Add some comments with hierarchies.
-- (Optional) Update the settings in R Studio as recommended in the previous slide.
-
-::: footer
-
-Photo by <a href="https://unsplash.com/@brett_jordan?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Brett Jordan</a> on <a href="https://unsplash.com/photos/brown-wooden-cross-on-white-surface-Fp4ERdkR5jU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-
-:::
+?? added value to their current practices and how learning to debug may help write better code and understand R better
 
 # Style
 
-+ Naming
-+ Spaces and punctuation
-+ Pipe
+## Discussion questions
 
-## Example
+1. Do you agree with others on naming style, spaces, punctuation...?
+2. Are you aware of any stylesheet for R code?
+3. Do you feel that others have a different way of writing R code than you? If so, does that affect you? Does that affect the way you can read/understand their code?
+	1. If someone wants to argue your preferences, what would you say?
 
-```{r}
-#| eval: false
-
-df<-read.csv( "Flight Subset 2013.csv")
-df$month_name = month.name[df$month]
-```
 
 ## Naming: Best practices
 
@@ -377,76 +336,7 @@ df$month_name = month.name[df$month]
 4. For variables: use lowercase letters, numbers and snake_case.
 4. Generally: variables = nouns; functions = verbs
 
-## Improved example
-
-```{r}
-#| eval: false
-library(here)
-i_am("index.qmd")
-
-some_flights<-read.csv(here( 'data' , "nycflights13_random2000.csv"))
-some_flights$month_name = month.name[some_flights$month]
-```
-
-## Spaces and punctuation
-
-:::: {.columns}
-
-::: {.column width="50%"}
-
-### No spaces
-
-Apandacomesintoabar
-
-:::
-
-::: {.column width="50%"}
-### With spaces
-
-A panda comes into a bar
-
-:::
-
-::::
-
-. . .
-
-:::: {.columns}
-
-::: {.column width="50%"}
-### No commas
-
-...eats shoots and leaves.
-
-:::
-
-::: {.column width="50%"}
-### With commas
-
-...eats, shoots, and leaves.
-
-:::
-
-::::
-
-. . .
-
-### Example
-
-```{r}
-#| eval: false
-#| code-line-numbers: "|4|5|6,8|7"
-library(here)
-i_am("index.qmd")
-
-some_flights<-read.csv(here( 'data' , "nycflights13_random2000.csv"))
-some_flights$month_name=month.name[some_flights$month]
-for(i in 1 : length(some_flights$dep_delay)){
-if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
-}
-```
-
-## Best practices {.smaller .incremental}
+## Punctuation best practices {.smaller .incremental}
 
 :::: {.columns}
 
@@ -471,9 +361,15 @@ if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
 
 ::::
 
-## Improved example {auto-animate=true}
+## Script with room for improvement
 
-```r
+
+```{r}
+#| eval: false
+#| code-line-numbers: "|4|5|6,8|7"
+library(here)
+i_am("index.qmd")
+
 some_flights<-read.csv(here( 'data' , "nycflights13_random2000.csv"))
 some_flights$month_name=month.name[some_flights$month]
 for(i in 1 : length(some_flights$dep_delay)){
@@ -481,61 +377,36 @@ if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
 }
 ```
 
-## Improved example {auto-animate=true}
+## Suggested changes
 
-```r
-some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
+## 
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+### Before
+
+```{r}
+#| eval: false
+#| code-line-numbers: "|4|5|6,8|7"
+library(here)
+some_flights<-read.csv(here( 'data' , "nycflights13_random2000.csv"))
 some_flights$month_name=month.name[some_flights$month]
 for(i in 1 : length(some_flights$dep_delay)){
 if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
 }
 ```
 
-## Improved example {auto-animate=true}
+:::
 
-```r
-some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
-some_flights$month_name <- month.name[some_flights$month]
-for(i in 1 : length(some_flights$dep_delay)){
-if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
-}
-```
+::: {.column width="50%"}
 
-## Improved example {auto-animate=true}
+### After
 
-```r
-some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
-some_flights$month_name <- month.name[some_flights$month]
-for (i in 1:length(some_flights$dep_delay)){
-if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
-}
-```
-
-## Improved example {auto-animate=true}
-
-```r
-some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
-some_flights$month_name <- month.name[some_flights$month]
-for (i in seq_along(some_flights$dep_delay)){
-if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
-}
-```
-
-## Improved example {auto-animate=true}
-
-```r
-some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
-some_flights$month_name <- month.name[some_flights$month]
-for (i in seq_along(some_flights$dep_delay)){
-  if (abs(i) > 30) {
-    print (some_flights $ dep_delay [ i ])
-  }
-}
-```
-
-## Improved example {auto-animate=true}
-
-```r
+```{r}
+#| eval: false
+#| code-line-numbers: "|4|5|6,8|7"
 some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
 some_flights$month_name <- month.name[some_flights$month]
 for (i in seq_along(some_flights$dep_delay)){
@@ -544,351 +415,53 @@ for (i in seq_along(some_flights$dep_delay)){
   }
 }
 ```
-
-::: notes
-
-The `seq_along()` change is because it is safer in case the vector
-you use it on is empty. I have a slide about it in case it can be interesting
-to discuss, but I have hidden it.
-
-:::
-
-## Exercise {background-image="img/practice.jpg" background-opacity="0.2"}
-
-- In the script, change the name of the dataframe to something more informative.
-
-- Fix the spaces and the punctuation.
-
-::: callout-tip
-
-You may use `Ctrl/⌘+F` in R Studio to replace all the calls: How many times has the dataframe been called?
-
-Use the automatic linting of R Studio to fix indentation!
-
-:::
-
-::: footer
-
-Photo by <a href="https://unsplash.com/@brett_jordan?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Brett Jordan</a> on <a href="https://unsplash.com/photos/brown-wooden-cross-on-white-surface-Fp4ERdkR5jU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-
-:::
-
-## Pipe
-
-```{r}
-#| eval: false
-#| code-line-numbers: "|1|2|3-5,19|7,9,11,13,15|21-22"
-some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
-some_flights$month_name <- month.name[some_flights$month]
-some_flights$carrier <- as.factor(some_flights$carrier)
-some_flights$tailnum <- as.factor(some_flights$tailnum)
-some_flights$origin <- as.factor(some_flights$origin)
-
-for (i in seq_along(some_flights$dep_delay)) {
-  if (is.na(some_flights$dep_delay[[i]])) {
-    some_flights[i, "dep_delay_cat"] <- NA
-  } else if (some_flights$dep_delay[[i]] < -30) {
-    some_flights[i, "dep_delay_cat"] <- "Early"
-  } else if (some_flights$dep_delay[[i]] < 30){
-    some_flights[i, "dep_delay_cat"] <- "Kind of on time"
-  } else {
-    some_flights[i, "dep_delay_cat"] <- "Late"
-  }
-}
-
-some_flights$dep_delay_cat <- as.factor(some_flights$dep_delay_cat)
-
-some_columns <- c("month_name", "carrier", "tailnum", "origin", "dep_delay_cat")
-some_flights_partial <- some_flights[some_columns]
-```
-
-## Problems
-
-- The same variable is overwritten: how to keep track of its state in an interactive session?
-
-- Typing the same thing over and over
-
-    + risk of typos
-    + what if you rename the variable?
-    
-- Copying parts in other variables: what about memory?!
-
-## Approach
-
-::: {.callout-tip}
-### Use the pipe!
-
-- `{magrittr}`'s `%>%` or R's `|>`
-
-Keyboard shortcuts:  `Ctrl+Shitf+M` / `⇧+⌘+M`
-
-:::
-
-(We'll see it in action in the next section)
-
-
-::: {.notes}
-
-Particularly useful in data wrangling and with tidyverse: the output of one function is the input of the next!
-So, we look at the solution in the next section.
-
-:::
-
-# Data wrangling
-
-+ Manipulating several columns at once
-+ Vectorization
-+ Turning quantitative values into categories
-
-## Multiple columns at once
-
-```{r}
-library(dplyr)
-library(readr)
-some_flights_raw <- read_csv(here("data", "nycflights13_random2000.csv")) # <1>
-some_flights <- some_flights_raw |>                                       # <2>
-  mutate(across(where(is.character), as.factor))                          # <3>
-some_flights |> select(where(is.factor))                                  # <4>
-```
-
-1. Specific state to which you might want to return
-2. New variable for a new state
-3. Apply the same transformation to multiple columns
-4. Inspect a subset of columns based on a condition.
-
-## Match vectors with indices
-
-```{r}
-#| output-location: fragment
-month.name
-```
-
-```{r}
-#| output-location: fragment
-month.name[[3]]
-```
-
-```{r}
-#| output-location: fragment
-month.name[c(4, 6, 7)]
-```
-
-```{r}
-#| output-location: fragment
-head(some_flights$month)
-```
-
-```{r}
-#| output-location: fragment
-month.name[head(some_flights$month)]
-```
-
-## Match vectors with indices
-
-```{r}
-#| output-location: fragment
-some_flights |>
-  mutate(month_name = month.name[month]) |> 
-  select(month_name, month)
-```
-
-## Turn numeric into categorical: `case_when()`
-
-```r
-for (i in seq_along(some_flights$dep_delay)) {
-  if (is.na(some_flights$dep_delay[[i]])) {
-    some_flights[i, "dep_delay_cat"] <- NA
-  } else if (some_flights$dep_delay[[i]] < -30) {
-    some_flights[i, "dep_delay_cat"] <- "Early"
-  } else if (some_flights$dep_delay[[i]] < 30) {
-    some_flights[i, "dep_delay_cat"] <- "Kind of on time"
-  } else {
-    some_flights[i, "dep_delay_cat"] <- "Late"
-  }
-}
-```
-
-## `if_else()`
-
-```{r}
-some_flights |> 
-  mutate(dep_delay_cat = if_else(is.na(dep_delay), NA, "We have a value")) |> 
-  slice_sample(n = 5, by = dep_delay_cat) |> 
-  select(starts_with("dep_delay"))
-```
-
-
-## `case_when()` {auto-animate=true}
-
-```r
-some_flights |> 
-  mutate(dep_delay_cat = case_when(
-    # condition ~ output
-  ))
-```
-
-## `case_when()` {auto-animate=true}
-
-```r
-some_flights |> 
-  mutate(dep_delay_cat = case_when(
-    # condition ~ output
-    is.na(dep_delay) ~ NA, # if it is NA, return NA
-    TRUE ~ "Late" # else, return "Late"
-  ))
-```
-
-## `case_when()` {auto-animate=true}
-
-```r
-some_flights |> 
-  mutate(dep_delay_cat = case_when(
-    # condition ~ output
-    is.na(dep_delay) ~ NA, # if it is NA, return NA
-    dep_delay < -30 ~ "Early", # else if it is lower than -30 return "Early"
-    dep_delay < 30 ~ "Kind of on time", # else if it is lower than 30...
-    TRUE ~ "Late" # else, return "Late"
-  ))
-```
-
-## `case_when()` vs `for` loop {.smaller}
-
-:::: {.columns}
-::: {.column width="45%"}
-
-```r
-some_flights |> 
-  mutate(dep_delay_cat = case_when(
-    is.na(dep_delay) ~ NA,
-    dep_delay < -30 ~ "Early",
-    dep_delay < 30 ~ "Kind of on time",
-    TRUE ~ "Late"
-  ))
-```
-:::
-::: {.column width="55%"}
-
-```r
-for (i in seq_along(some_flights$dep_delay)) {
-  if (is.na(some_flights$dep_delay[[i]])) {
-    some_flights[i, "dep_delay_cat"] <- NA
-  } else if (some_flights$dep_delay[[i]] < -30) {
-    some_flights[i, "dep_delay_cat"] <- "Early"
-  } else if (some_flights$dep_delay[[i]] < 30) {
-    some_flights[i, "dep_delay_cat"] <- "Kind of on time"
-  } else {
-    some_flights[i, "dep_delay_cat"] <- "Late"
-  }
-}
-```
 :::
 ::::
 
-## Improved example
+## Reflection
 
-```{r}
-#| output-location: slide
-#| code-line-numbers: "|1|2|3|4-9|10|12-13"
-some_flights <- some_flights_raw |> 
-  mutate(
-    month_name = month.name[month],                    # <1>
-    dep_delay_cat = case_when(                         # <2>
-      is.na(dep_delay) ~ NA,                           # <2>
-      dep_delay < -30 ~ "Early",                       # <2>
-      dep_delay < 30 ~ "Kind of on time",              # <2>
-      TRUE ~ "Late"                                    # <2>
-      ),                                               # <2>
-    across(where(is.character), as.factor)             # <3>
-  )
-some_flights |> 
-  select(month, month_name, dep_delay, dep_delay_cat)
-```
+Do you find one clearer than the other? Do you have specific preferences, and why?
 
-1. Create a column with the names of the months based on the number
-2. Make a categorical version of `dep_delay`.
-3. Turn all character columns into factors
+Now that you have heard my recommendations, if someone wants to argue your preferences, what would you say?
 
-## Multiple columns at once {auto-animate=true}
+# The pipe and other data-wrangling tricks
 
-```r
-some_flights |> 
-  mutate(
-    dep_delay_cat = case_when(
-      is.na(dep_delay) ~ NA,
-      dep_delay < -30 ~ "Early",
-      dep_delay < 30 ~ "Kind of on time",
-      TRUE ~ "Late"
-    ) |> as.factor()
-  )
-```
+## Discussion questions
 
-## Multiple columns at once {auto-animate=true}
+1. Do you know what the pipe is in R/coding, what it is used for?
+2. Do you use the pipe?
+	1. If so, the tidyverse one from `{magrittr}` or the native one?
+	2. Do you have a preference? Which? Why?
+	3. If you do know about the pipe but don't use it, why?
+3. Do you use tidyverse packages (tibbles...)? Why (not)?
+	1. If yes, do you use `case_when()` or long conditionals? (Show example of the conditional)
 
-```r
-some_flights |> 
-  mutate(
-    across(ends_with("delay"),
-    ~ case_when(
-      is.na(.x) ~ NA,
-      .x < -30 ~ "Early",
-      .x < 30 ~ "Kind of on time",
-      TRUE ~ "Late"
-    ) |> as.factor(),
-    .names = "{.col}_cat"
-  )
-```
+## `readr::read_csv()` vs `read.csv()`
 
-## Multiple columns at once {auto-animate=true}
+## `tidyr::select()`
 
-```r
-some_flights |> 
-  mutate(
-    across(ends_with("delay"),
-    ~ case_when(
-      is.na(.x) ~ NA,
-      .x < -30 ~ "Early",
-      .x < 30 ~ "Kind of on time",
-      TRUE ~ "Late"
-    ) |> factor(levels = c("Early", "Kind of on time", "Late")),
-    .names = "{.col}_cat"
-  )
-```
+## `dplyr::mutate()` and `dplyr::across()`
 
-## Multiple columns at once
+## `dplyr::case_when()` vs `if + else if + else`
 
-```{r}
-#| echo: false
-some_flights <- some_flights |> 
-  mutate(across(
-    ends_with("delay"),
-    ~ case_when(
-      is.na(.x) ~ NA,
-      .x < -30 ~ "Early",
-      .x < 30 ~ "Kind of on time",
-      TRUE ~ "Late"
-    ) |> factor(levels = c("Early", "Kind of on time", "Late")),
-    .names = "{.col}_cat"
-  ))
-some_flights |> 
-  select(contains("delay"))
-```
 
-## Exercise {background-image="img/practice.jpg" background-opacity="0.2"}
+## Example
 
-- Use `readr::read_csv()` to read the file and return a tibble.
-- Use the pipe and `dplyr::mutate()` to modify the character columns into factors.
-- Use `dplyr::across()` and `dplyr::case_when()` to obtain a categorical version of the delay columns.
+## Reflection
 
-::: footer
+1. What are the nicer things of tidyverse? What are the nicer things of base R?
+2. Why would you use the pipe? Why not?
 
-Photo by <a href="https://unsplash.com/@brett_jordan?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Brett Jordan</a> on <a href="https://unsplash.com/photos/brown-wooden-cross-on-white-surface-Fp4ERdkR5jU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-
-:::
 
 # I/O
 
-- `{readr}`
-- File formats / extensions
+## Discussion questions
+
+1. What is the format of your input data?
+	2. What is the format of your output data?
+	3. Are the files plain text? Are they interoperable (can they be opened by different applications)?
+	4. How do you combine the output of your scripts into the writing you have to provide (papers, reports, presentations...)
+
 
 ## Comma-separated values
 
@@ -1046,45 +619,7 @@ knitr::kable(my_data)
 
 ::::
 
-## Exercise {background-image="img/practice.jpg" background-opacity="0.2"}
-
-- Save the filtered dataset as a file with comma-separated values, in a new folder called "output".
-
-::: footer
-
-Photo by <a href="https://unsplash.com/@brett_jordan?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Brett Jordan</a> on <a href="https://unsplash.com/photos/brown-wooden-cross-on-white-surface-Fp4ERdkR5jU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-
-:::
-
-# To finish: start over {background-image="img/scratch.jpg" background-opacity="0.2" .smaller}
-
-:::: {.columns}
-
-::: {.column width="50%"}
-
-1. Create a new, empty project without git.
-2. Turn it into a git repository with `usethis::use_git()`.
-3. Add a readme with `usethis::use_readme_rmd()`.
-4. Create a script and fill it with the code in [this gist](https://gist.github.com/montesmariana/192c65b23820642cb467755f86beab01).
-
-:::
-
-::: {.column width="50%"}
-
-5. Source the script from the README.
-6. Edit the text of the README and call `print_tree()` from the sourced script.
-7. Render the README.
-8. Link to GitHub with `usethis::use_github(protocol="ssh")`.
-
-:::
-
-::::
-
-::: footer
-
-Photo by <a href="https://unsplash.com/@laurenagray?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">LAUREN GRAY</a> on <a href="https://unsplash.com/photos/white-egg-on-white-textile-Zqh5l1JWs5M?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-  
-:::
+## Reflection
 
 # References
 

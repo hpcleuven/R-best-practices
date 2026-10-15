@@ -1,0 +1,1113 @@
+---
+title: "R Best Practices"
+format:
+  revealjs:
+    theme: [default, ../vsc.scss]
+title-slide-attributes: 
+  data-background-image: img/vsc-title-bg.png
+  data-background-size: contain
+  data-background-position: bottom
+author: Mariana Montes
+execute:
+  echo: true
+code-annotations: select
+---
+
+## Outline
+
+- Reproducibility & debugging
+    
+- Style
+
+- Data wrangling
+    
+- I/O
+
+## Let's start with a bad example!
+
+```{r}
+#| eval: false
+
+setwd("C:\\Users\\username\\My Projects\\R for best practices") # <1>
+
+df<-read.csv( "Flight Subset 2013.csv")                         # <1>
+df$month_name = month.name[df$month]                            # <2>
+df$carrier <- as.factor(df$carrier)                             # <3>
+df$tailnum <- as.factor(df$tailnum)                             # <3>
+df$origin <- as.factor(df$origin)                               # <3>
+for(i in 1:length(df$dep_delay)){                               # <4>
+if(is.na(df$dep_delay[[i]])){                                   # <5>
+df[i, "dep_delay_cat"] <- NA                                    # <5>
+}else if(df$dep_delay[[i]] < -30){                              # <5>
+    df[i, "dep_delay_cat"] <- "Early"                           # <5>
+       }else if(df$dep_delay[[i]] < 30){                        # <5>
+    df[i, "dep_delay_cat"] <- "Kind of on time"                 # <5>
+  } else {                                                      # <5>
+    df[i, "dep_delay_cat"] <- "Late"                            # <5>
+  }                                                             # <5>
+}                                                               # <5>
+df$dep_delay_cat <- as.factor(df$dep_delay_cat)                 # <6>
+```
+
+1. Naming conventions
+2. Assignment operator
+3. Rewriting the same variable, and with the same operation!
+4. `1:length(x)` (and spaces)
+5. `for` loop to create a categorical variable (and spaces)
+6. Again 3!
+
+::: notes
+Also: not using the pipe
+:::
+
+# Reproducibility & debugging
+
++ `{here}`: project-oriented workflow
++ git
++ `{renv}`: virtual environments
++ `{reprex}`: Minimal **repr**oducible **ex**amples
++ `browser()` and breakpoints
+
+## {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+### `setwd()`
+
+- "/" or "\\\\" depending on the OS!
+
+The (absolute) path needs to be updated WHEN you:
+
+- move your script around
+
+- work from a different device, a server...
+  
+- share your script with someone else
+  
+:::
+::: {.column}
+
+### Project-based workflow
+
+- R projects, git repositories...
+
+- Portable: relevant code and data together
+
+- Paths relative to the root of a project
+
+![](img/rproj.png){width=150}
+
+:::
+::::
+
+::: footer
+[Project oriented workflows](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/)
+:::
+
+## `{here}`
+
+:::: {.columns}
+
+::: {.column width="60%"}
+
+```{r}
+library(here)
+
+i_am("index.qmd")
+# here()
+here() |> dir() |> length() |> print()
+here("analysis") |> dir() |> print()  
+source(here("analysis", "model.R"))   
+```
+
+:::
+
+::: {.column width="40%"}
+
+![Illustration by Allison Horst.](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/57457fc3-1d2d-4a3b-a9b7-f0b62e418cd5_rw_1920.png?h=e0721f766fc8f031edeb67f7f8024595){fig-alt='A cartoon showing two paths side-by-side. On the left is a scary spooky forest, with spiderwebs and gnarled trees, with file paths written on the branches like “~/mmm/nope.csv” and “setwd(“/haha/good/luck/”), with a scared looking cute fuzzy monster running out of it. On the right is a bright, colorful path with flowers, rainbow and sunshine, with signs saying “here!” and “it’s all right here!” A monster facing away from us in a backpack and walking stick is looking toward the right path. Stylized text reads “here: find your path.”'}
+
+:::
+
+::::
+
+::: notes
+1. Nothing happens as long as the path is the path of this file relative to the root of the project.
+2. Get the number of files/directories in the root of the project
+3. Get the contents of the "analysis" directory
+4. Source the "model.R" script in the "analysis" directory.
+:::
+
+::: footer
+[`{here}`](https://here.r-lib.org/)
+:::
+
+## git
+
+:::: {.columns}
+
+::: {.column width="60%"}
+
+- R projects can be git repositories
+
+- Version control: keep track of the changes in your code, data, output...
+
+- Share and collaborate via GitLab, Github...
+
+:::
+
+::: {.column width="30%"}
+
+
+![](img/git.png)
+
+::: {layout-ncol=2}
+![](img/github-mark.png)
+
+![](img/gitlab-logo-cropped.png)
+
+:::
+:::
+
+::::
+
+::: footer
+[Happy Git With R](https://happygitwithr.com/)
+:::
+
+## `{renv}`
+
+:::: {.columns}
+
+::: {.column width="75%"}
+
+- Can be good practice, but it's not as necessary as with Python
+- Keeps track of R and package versions
+
+```{r}
+#| eval: false
+library(renv)
+init()                                # <1>
+install.packages("tidyverse")         # <2>
+install.packages("reprex")            # <2>
+snapshot()                            # <3>
+# Someone else uses your project
+restore()                             # <4>
+```
+
+1. Initialize your virtual environment.
+2. Install some packages (in the environment).
+3. Register the status.
+4. In another system, recover the status.
+:::
+
+::: {.column width="25%"}
+
+![](https://raw.githubusercontent.com/rstudio/renv/main/man/figures/logo.svg){height="150px"}
+
+:::
+::::
+
+::: notes
+R users don't deal with different versions of R packages like Python users do
+with Python modules, since they are mostly centrally managed by CRAN or other
+repositories.
+But it can still be useful practice in some case, "if you really care about
+reproducibility" (in Hadley Wickham's words).
+:::
+
+::: footer
+[`{renv}`](https://rstudio.github.io/renv/)
+:::
+
+## Exercise {background-image="img/practice.jpg" background-opacity="0.2"}
+
+- Go to GitHub and fork the following repository: https://github.com/montesmariana/r-best-practices-exercises
+- From RStudio, create a new project from version control and provide the username and repository name of your fork
+- With the new project open in RStudio, restore the `{renv}` environment.
+
+::: footer
+
+Photo by <a href="https://unsplash.com/@brett_jordan?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Brett Jordan</a> on <a href="https://unsplash.com/photos/brown-wooden-cross-on-white-surface-Fp4ERdkR5jU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+
+:::
+
+## `{reprex}`: Minimal reproducible examples
+
+```{r}
+#| include: false
+unlink(here("R", "sth_is_wrong_reprex.md"))
+unlink(here("R", "sth_is_wrong_reprex.R"))
+print_regex <- function(original_name) {
+  change_extension <- function(name, new_ext) {
+    gsub(".R$", paste0("_reprex.", new_ext), name)
+  }
+  if (file.exists(here("R", change_extension(original_name, "md")))) {
+    change_extension(original_name, "md")
+  } else {
+    change_extension(original_name, "R")
+  }
+}
+```
+
+```{r}
+#| message: false
+#| echo: false
+code_to_reproduce <- "sth_is_wrong.R"
+reprex::reprex(input = here("R", code_to_reproduce))
+rpx_file <- print_regex(code_to_reproduce)
+```
+
+There is some code to reproduce...
+
+```{r filename=code_to_reproduce}
+#| eval: false
+library(nycflights13)
+df <- head(flights)
+for (i in 1:length(df$dep_delay)) {
+  if (is.na(df$dep_delay[[i]])) {
+    df[i, "dep_delay_cat"] <- NA
+  } else if(df$dep_delay[[i]] < -30) {
+    df[i, "dep_delay_cat"] <- delay_categories[[1]]
+  } else if(df$dep_delay[[i]] < 30) {
+    df[i, "dep_delay_cat"] <- delay_categories[[2]]
+  } else {
+    df[i, "dep_delay_cat"] <- delay_categories[[3]]
+  }
+}
+delay_categories <- c("Early", "Kind of on time", "Late")
+```
+
+## `{reprex}`: Minimal reproducible examples
+
+In the console (or with the RStudio add-on):
+
+```r
+library(reprex)
+reprex(here("R", "`r code_to_reproduce`"))
+```
+
+## ![](https://raw.githubusercontent.com/tidyverse/reprex/main/man/figures/logo.png){height="100px"}
+
+::: {.callout-warning icon=false}
+### `r rpx_file` is created
+
+```{r}
+#| echo: false
+#| results: asis
+readLines(here("R", rpx_file)) |> cat(sep="\n")
+```
+:::
+
+## Interactive debugging
+
+:::: {.columns}
+
+::: {.column width="30%"}
+- `browser()`
+- Breakpoints
+:::
+
+::: {.column width="70%"}
+
+![](img/breakpoint.png){.shaded}
+:::
+
+::::
+
+## Tips for R scripts
+
+:::: {.columns}
+
+::: {.column width="60%"}
+![](img/source-screenshot.png){.shaded}
+:::
+
+::: {.column width="40%"}
+
+![](img/clean-session.png){.shaded}
+:::
+
+::::
+
+::: notes
+Tips include:
+
+- Use the comment style in RStudio to generate headings with hierarchies,
+for folding but also to have an outline and quick links to different regions
+
+- Do not save .Rdata or history, so you can always restart the session in a clean
+environment (because you don't know what leftovers there are and how they can
+impact what you're doing next).
+:::
+
+## Exercise {background-image="img/practice.jpg" background-opacity="0.2"}
+
+- Run the code in "script.R" and fix the bugs necessary for it to run well. Restart R every time you source the file.
+- Add some comments with hierarchies.
+- (Optional) Update the settings in R Studio as recommended in the previous slide.
+
+::: footer
+
+Photo by <a href="https://unsplash.com/@brett_jordan?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Brett Jordan</a> on <a href="https://unsplash.com/photos/brown-wooden-cross-on-white-surface-Fp4ERdkR5jU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+
+:::
+
+# Style
+
++ Naming
++ Spaces and punctuation
++ Pipe
+
+## Example
+
+```{r}
+#| eval: false
+
+df<-read.csv( "Flight Subset 2013.csv")
+df$month_name = month.name[df$month]
+```
+
+## Naming: Best practices
+
+1. Beware of / avoid using existing names (e.g. `df`, `c`, `T`, `mean`)
+2. Avoid using dots (although Base R does use them)
+3. For files: stick to numbers, lowercase letters, `_` and `-` - beware of case!
+4. For variables: use lowercase letters, numbers and snake_case.
+4. Generally: variables = nouns; functions = verbs
+
+## Improved example
+
+```{r}
+#| eval: false
+library(here)
+i_am("index.qmd")
+
+some_flights<-read.csv(here( 'data' , "nycflights13_random2000.csv"))
+some_flights$month_name = month.name[some_flights$month]
+```
+
+## Spaces and punctuation
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+### No spaces
+
+Apandacomesintoabar
+
+:::
+
+::: {.column width="50%"}
+### With spaces
+
+A panda comes into a bar
+
+:::
+
+::::
+
+. . .
+
+:::: {.columns}
+
+::: {.column width="50%"}
+### No commas
+
+...eats shoots and leaves.
+
+:::
+
+::: {.column width="50%"}
+### With commas
+
+...eats, shoots, and leaves.
+
+:::
+
+::::
+
+. . .
+
+### Example
+
+```{r}
+#| eval: false
+#| code-line-numbers: "|4|5|6,8|7"
+library(here)
+i_am("index.qmd")
+
+some_flights<-read.csv(here( 'data' , "nycflights13_random2000.csv"))
+some_flights$month_name=month.name[some_flights$month]
+for(i in 1 : length(some_flights$dep_delay)){
+if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
+}
+```
+
+## Best practices {.smaller .incremental}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+- No spaces between `()` and text inside.
+- Use `""` instead of `''` unless there is already `""` inside.
+- The assignment operator in R is ` <- `. ^[Use `Alt+-` / `⌥+-`!]
+- The assignment operator and infix operators should be surrounded by spaces.
+
+:::
+
+::: {.column width="50%"}
+
+- Spaces around the `()` for `for`, `if` and `when`.
+- No spaces around `:`, `$`, `[`, `^`, `+`...
+- Spaces only after `()` for function arguments.
+- Difference between `[]` and `[[]]`.
+- Pay attention to indentation!
+
+:::
+
+::::
+
+## Improved example {auto-animate=true}
+
+```r
+some_flights<-read.csv(here( 'data' , "nycflights13_random2000.csv"))
+some_flights$month_name=month.name[some_flights$month]
+for(i in 1 : length(some_flights$dep_delay)){
+if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
+}
+```
+
+## Improved example {auto-animate=true}
+
+```r
+some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
+some_flights$month_name=month.name[some_flights$month]
+for(i in 1 : length(some_flights$dep_delay)){
+if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
+}
+```
+
+## Improved example {auto-animate=true}
+
+```r
+some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
+some_flights$month_name <- month.name[some_flights$month]
+for(i in 1 : length(some_flights$dep_delay)){
+if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
+}
+```
+
+## Improved example {auto-animate=true}
+
+```r
+some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
+some_flights$month_name <- month.name[some_flights$month]
+for (i in 1:length(some_flights$dep_delay)){
+if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
+}
+```
+
+## Improved example {auto-animate=true}
+
+```r
+some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
+some_flights$month_name <- month.name[some_flights$month]
+for (i in seq_along(some_flights$dep_delay)){
+if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
+}
+```
+
+## Improved example {auto-animate=true}
+
+```r
+some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
+some_flights$month_name <- month.name[some_flights$month]
+for (i in seq_along(some_flights$dep_delay)){
+  if (abs(i) > 30) {
+    print (some_flights $ dep_delay [ i ])
+  }
+}
+```
+
+## Improved example {auto-animate=true}
+
+```r
+some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
+some_flights$month_name <- month.name[some_flights$month]
+for (i in seq_along(some_flights$dep_delay)){
+  if (abs(i) > 30) {
+    print(some_flights$dep_delay[i])
+  }
+}
+```
+
+::: notes
+
+The `seq_along()` change is because it is safer in case the vector
+you use it on is empty. I have a slide about it in case it can be interesting
+to discuss, but I have hidden it.
+
+:::
+
+## Exercise {background-image="img/practice.jpg" background-opacity="0.2"}
+
+- In the script, change the name of the dataframe to something more informative.
+
+- Fix the spaces and the punctuation.
+
+::: callout-tip
+
+You may use `Ctrl/⌘+F` in R Studio to replace all the calls: How many times has the dataframe been called?
+
+Use the automatic linting of R Studio to fix indentation!
+
+:::
+
+::: footer
+
+Photo by <a href="https://unsplash.com/@brett_jordan?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Brett Jordan</a> on <a href="https://unsplash.com/photos/brown-wooden-cross-on-white-surface-Fp4ERdkR5jU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+
+:::
+
+## Pipe
+
+```{r}
+#| eval: false
+#| code-line-numbers: "|1|2|3-5,19|7,9,11,13,15|21-22"
+some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
+some_flights$month_name <- month.name[some_flights$month]
+some_flights$carrier <- as.factor(some_flights$carrier)
+some_flights$tailnum <- as.factor(some_flights$tailnum)
+some_flights$origin <- as.factor(some_flights$origin)
+
+for (i in seq_along(some_flights$dep_delay)) {
+  if (is.na(some_flights$dep_delay[[i]])) {
+    some_flights[i, "dep_delay_cat"] <- NA
+  } else if (some_flights$dep_delay[[i]] < -30) {
+    some_flights[i, "dep_delay_cat"] <- "Early"
+  } else if (some_flights$dep_delay[[i]] < 30){
+    some_flights[i, "dep_delay_cat"] <- "Kind of on time"
+  } else {
+    some_flights[i, "dep_delay_cat"] <- "Late"
+  }
+}
+
+some_flights$dep_delay_cat <- as.factor(some_flights$dep_delay_cat)
+
+some_columns <- c("month_name", "carrier", "tailnum", "origin", "dep_delay_cat")
+some_flights_partial <- some_flights[some_columns]
+```
+
+## Problems
+
+- The same variable is overwritten: how to keep track of its state in an interactive session?
+
+- Typing the same thing over and over
+
+    + risk of typos
+    + what if you rename the variable?
+    
+- Copying parts in other variables: what about memory?!
+
+## Approach
+
+::: {.callout-tip}
+### Use the pipe!
+
+- `{magrittr}`'s `%>%` or R's `|>`
+
+Keyboard shortcuts:  `Ctrl+Shitf+M` / `⇧+⌘+M`
+
+:::
+
+(We'll see it in action in the next section)
+
+
+::: {.notes}
+
+Particularly useful in data wrangling and with tidyverse: the output of one function is the input of the next!
+So, we look at the solution in the next section.
+
+:::
+
+# Data wrangling
+
++ Manipulating several columns at once
++ Vectorization
++ Turning quantitative values into categories
+
+## Multiple columns at once
+
+```{r}
+library(dplyr)
+library(readr)
+some_flights_raw <- read_csv(here("data", "nycflights13_random2000.csv")) # <1>
+some_flights <- some_flights_raw |>                                       # <2>
+  mutate(across(where(is.character), as.factor))                          # <3>
+some_flights |> select(where(is.factor))                                  # <4>
+```
+
+1. Specific state to which you might want to return
+2. New variable for a new state
+3. Apply the same transformation to multiple columns
+4. Inspect a subset of columns based on a condition.
+
+## Match vectors with indices
+
+```{r}
+#| output-location: fragment
+month.name
+```
+
+```{r}
+#| output-location: fragment
+month.name[[3]]
+```
+
+```{r}
+#| output-location: fragment
+month.name[c(4, 6, 7)]
+```
+
+```{r}
+#| output-location: fragment
+head(some_flights$month)
+```
+
+```{r}
+#| output-location: fragment
+month.name[head(some_flights$month)]
+```
+
+## Match vectors with indices
+
+```{r}
+#| output-location: fragment
+some_flights |>
+  mutate(month_name = month.name[month]) |> 
+  select(month_name, month)
+```
+
+## Turn numeric into categorical: `case_when()`
+
+```r
+for (i in seq_along(some_flights$dep_delay)) {
+  if (is.na(some_flights$dep_delay[[i]])) {
+    some_flights[i, "dep_delay_cat"] <- NA
+  } else if (some_flights$dep_delay[[i]] < -30) {
+    some_flights[i, "dep_delay_cat"] <- "Early"
+  } else if (some_flights$dep_delay[[i]] < 30) {
+    some_flights[i, "dep_delay_cat"] <- "Kind of on time"
+  } else {
+    some_flights[i, "dep_delay_cat"] <- "Late"
+  }
+}
+```
+
+## `if_else()`
+
+```{r}
+some_flights |> 
+  mutate(dep_delay_cat = if_else(is.na(dep_delay), NA, "We have a value")) |> 
+  slice_sample(n = 5, by = dep_delay_cat) |> 
+  select(starts_with("dep_delay"))
+```
+
+
+## `case_when()` {auto-animate=true}
+
+```r
+some_flights |> 
+  mutate(dep_delay_cat = case_when(
+    # condition ~ output
+  ))
+```
+
+## `case_when()` {auto-animate=true}
+
+```r
+some_flights |> 
+  mutate(dep_delay_cat = case_when(
+    # condition ~ output
+    is.na(dep_delay) ~ NA, # if it is NA, return NA
+    TRUE ~ "Late" # else, return "Late"
+  ))
+```
+
+## `case_when()` {auto-animate=true}
+
+```r
+some_flights |> 
+  mutate(dep_delay_cat = case_when(
+    # condition ~ output
+    is.na(dep_delay) ~ NA, # if it is NA, return NA
+    dep_delay < -30 ~ "Early", # else if it is lower than -30 return "Early"
+    dep_delay < 30 ~ "Kind of on time", # else if it is lower than 30...
+    TRUE ~ "Late" # else, return "Late"
+  ))
+```
+
+## `case_when()` vs `for` loop {.smaller}
+
+:::: {.columns}
+::: {.column width="45%"}
+
+```r
+some_flights |> 
+  mutate(dep_delay_cat = case_when(
+    is.na(dep_delay) ~ NA,
+    dep_delay < -30 ~ "Early",
+    dep_delay < 30 ~ "Kind of on time",
+    TRUE ~ "Late"
+  ))
+```
+:::
+::: {.column width="55%"}
+
+```r
+for (i in seq_along(some_flights$dep_delay)) {
+  if (is.na(some_flights$dep_delay[[i]])) {
+    some_flights[i, "dep_delay_cat"] <- NA
+  } else if (some_flights$dep_delay[[i]] < -30) {
+    some_flights[i, "dep_delay_cat"] <- "Early"
+  } else if (some_flights$dep_delay[[i]] < 30) {
+    some_flights[i, "dep_delay_cat"] <- "Kind of on time"
+  } else {
+    some_flights[i, "dep_delay_cat"] <- "Late"
+  }
+}
+```
+:::
+::::
+
+## Improved example
+
+```{r}
+#| output-location: slide
+#| code-line-numbers: "|1|2|3|4-9|10|12-13"
+some_flights <- some_flights_raw |> 
+  mutate(
+    month_name = month.name[month],                    # <1>
+    dep_delay_cat = case_when(                         # <2>
+      is.na(dep_delay) ~ NA,                           # <2>
+      dep_delay < -30 ~ "Early",                       # <2>
+      dep_delay < 30 ~ "Kind of on time",              # <2>
+      TRUE ~ "Late"                                    # <2>
+      ),                                               # <2>
+    across(where(is.character), as.factor)             # <3>
+  )
+some_flights |> 
+  select(month, month_name, dep_delay, dep_delay_cat)
+```
+
+1. Create a column with the names of the months based on the number
+2. Make a categorical version of `dep_delay`.
+3. Turn all character columns into factors
+
+## Multiple columns at once {auto-animate=true}
+
+```r
+some_flights |> 
+  mutate(
+    dep_delay_cat = case_when(
+      is.na(dep_delay) ~ NA,
+      dep_delay < -30 ~ "Early",
+      dep_delay < 30 ~ "Kind of on time",
+      TRUE ~ "Late"
+    ) |> as.factor()
+  )
+```
+
+## Multiple columns at once {auto-animate=true}
+
+```r
+some_flights |> 
+  mutate(
+    across(ends_with("delay"),
+    ~ case_when(
+      is.na(.x) ~ NA,
+      .x < -30 ~ "Early",
+      .x < 30 ~ "Kind of on time",
+      TRUE ~ "Late"
+    ) |> as.factor(),
+    .names = "{.col}_cat"
+  )
+```
+
+## Multiple columns at once {auto-animate=true}
+
+```r
+some_flights |> 
+  mutate(
+    across(ends_with("delay"),
+    ~ case_when(
+      is.na(.x) ~ NA,
+      .x < -30 ~ "Early",
+      .x < 30 ~ "Kind of on time",
+      TRUE ~ "Late"
+    ) |> factor(levels = c("Early", "Kind of on time", "Late")),
+    .names = "{.col}_cat"
+  )
+```
+
+## Multiple columns at once
+
+```{r}
+#| echo: false
+some_flights <- some_flights |> 
+  mutate(across(
+    ends_with("delay"),
+    ~ case_when(
+      is.na(.x) ~ NA,
+      .x < -30 ~ "Early",
+      .x < 30 ~ "Kind of on time",
+      TRUE ~ "Late"
+    ) |> factor(levels = c("Early", "Kind of on time", "Late")),
+    .names = "{.col}_cat"
+  ))
+some_flights |> 
+  select(contains("delay"))
+```
+
+## Exercise {background-image="img/practice.jpg" background-opacity="0.2"}
+
+- Use `readr::read_csv()` to read the file and return a tibble.
+- Use the pipe and `dplyr::mutate()` to modify the character columns into factors.
+- Use `dplyr::across()` and `dplyr::case_when()` to obtain a categorical version of the delay columns.
+
+::: footer
+
+Photo by <a href="https://unsplash.com/@brett_jordan?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Brett Jordan</a> on <a href="https://unsplash.com/photos/brown-wooden-cross-on-white-surface-Fp4ERdkR5jU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+
+:::
+
+# I/O
+
+- `{readr}`
+- File formats / extensions
+
+## Comma-separated values
+
+```{r}
+cat_file_name <- here("data", "flights_with_factors.csv")
+some_flights |>
+  select(carrier, flight, month_name, time_hour, contains("delay")) |> 
+  write_csv(cat_file_name)
+readLines(cat_file_name, n = 10)
+```
+
+## `{readr}`
+
+```{r}
+read_csv(cat_file_name)
+```
+
+::: notes
+
+I have two more slides (hidden) about readr parsing columns
+and one comparing it to base R functions but it might be too much
+:::
+
+## Parsing columns {visibility="hidden"}
+
+```{r}
+spec_csv(cat_file_name)
+```
+
+## Parsing when reading {visibility="hidden"}
+
+```{r}
+#| code-line-numbers: "|3-5|6-8|9"
+delay_levels <- c("Early", "Kind of on time", "Late")
+read_csv(cat_file_name, col_types = list(
+  month_name = col_factor(levels = month.name),
+  dep_delay_cat = col_factor(levels = delay_levels, ordered = TRUE),
+  arr_delay_cat = col_factor(levels = delay_levels, ordered = TRUE),
+  dep_delay = "i",
+  arr_delay = "i",
+  time_hour = "T",
+  .default = "c")
+) |> head(5)
+
+```
+
+
+## X-separated values...
+
+:::: {.columns}
+
+::: {.column}
+
+Values separated by spaces (`readr::read_table()`)
+
+```
+col1 col2 col3
+1.5 2.2 3
+4 5 6
+7 8 9
+```
+:::
+
+::: {.column}
+
+**C**omma **s**eparated **v**alues (`readr::read_csv()`)
+
+```
+col1,col2,col3
+1.5,2.2,3
+4,5,6
+7,8,9
+```
+:::
+
+::::
+
+<hr>
+
+:::: {.columns}
+
+::: {.column}
+
+Values separated by semicolons (`readr::read_csv2()`)
+
+```
+col1;col2;col3
+1,5;2,2;3
+4;5;6
+7;8;9
+```
+:::
+
+::: {.column}
+
+**T**ab-**s**eparated **v**alues (`readr::read_tsv()`)
+
+```{r}
+#| echo: false
+#| results: asis
+cat("    col1\tcol2\tcol3\n")
+cat("    1,5\tsomething;semicolon\t3\n")
+cat("    text,with,commas\twha a a t\t6\n")
+cat("    7\t8\t9\n")
+```
+:::
+
+::::
+
+
+## .rds, .rda, .Rdata, other formats {.smaller}
+
+File type | Save | Open | Pros | Cons
+---- | ---- | ---- | ------ | -------
+.rda/.Rdata^[Outside of (data) packages.] | `save()` | `load()` | Save multiple R objects as they are | Only R can open it; modifies variables
+.rds | `saveRDS()` | `readRDS()` | Save single R object as it is | Only R can open it.
+.txt, .csv... | `write.csv()`... | `read.csv()`... | Plain text: interoperable | Not just any R object
+
+## Literate programming
+
+:::: {.columns}
+
+::: {.column width="30%"}
+
+- `{rmarkdown}`, `{bookdown}`...
+- [Quarto](https://quarto.org)
+
+:::
+
+::: {.column width="70%"}
+
+
+````
+---
+title: "Great code report"
+author: "A responsible researcher"
+---
+
+```{{r}}
+#| include: false
+library(here)
+library(readr)
+my_data <- read_csv("path/to/data")
+```
+
+I will show a dataset with `r knitr::inline_expr('nrow(my_data)')` rows.
+
+```{{r}}
+knitr::kable(my_data)
+```
+
+````
+
+:::
+
+::::
+
+## Exercise {background-image="img/practice.jpg" background-opacity="0.2"}
+
+- Save the filtered dataset as a file with comma-separated values, in a new folder called "output".
+
+::: footer
+
+Photo by <a href="https://unsplash.com/@brett_jordan?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Brett Jordan</a> on <a href="https://unsplash.com/photos/brown-wooden-cross-on-white-surface-Fp4ERdkR5jU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+
+:::
+
+# To finish: start over {background-image="img/scratch.jpg" background-opacity="0.2" .smaller}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+1. Create a new, empty project without git.
+2. Turn it into a git repository with `usethis::use_git()`.
+3. Add a readme with `usethis::use_readme_rmd()`.
+4. Create a script and fill it with the code in [this gist](https://gist.github.com/montesmariana/192c65b23820642cb467755f86beab01).
+
+:::
+
+::: {.column width="50%"}
+
+5. Source the script from the README.
+6. Edit the text of the README and call `print_tree()` from the sourced script.
+7. Render the README.
+8. Link to GitHub with `usethis::use_github(protocol="ssh")`.
+
+:::
+
+::::
+
+::: footer
+
+Photo by <a href="https://unsplash.com/@laurenagray?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">LAUREN GRAY</a> on <a href="https://unsplash.com/photos/white-egg-on-white-textile-Zqh5l1JWs5M?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+  
+:::
+
+# References
+
+## {.smaller}
+
+### Online books
+
+- [R for Data Science (2e)](https://r4ds.hadley.nz/)
+
+- [Advanced R](https://adv-r.hadley.nz/index.html)
+
+- [Happy Git and Github for the useR](https://happygitwithr.com/)
+
+### Blogposts
+
+- [Tidyverse styleguide](https://style.tidyverse.org/index.html)
+
+- [Project oriented workflows](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/)
+
+- [A project from scratch](https://marianamontes.netlify.app/post/a-project-from-scratch/) <!-- This is mine -->
+
+### YouTube
+
+- [Jenny Bryan | Object of type 'closure' is not subsettable](https://www.youtube.com/watch?v=vgYS-F8opgE&ab_channel=PositPBC)
+
+- [Hadley Wickham | The Joy of functional programming](https://www.youtube.com/watch?v=bzUmK0Y07ck&list=PLUhtb0BvZvZQpy44ksG0JsySCDqmf8pZ4&index=19&ab_channel=AssociationforComputingMachinery%28ACM%29)
