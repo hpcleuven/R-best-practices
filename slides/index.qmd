@@ -581,16 +581,214 @@ If yes, do you use `case_when()` or long conditionals? (Show example of the cond
 Photo by <a href="https://unsplash.com/@headwayio?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Headway</a> on <a href="https://unsplash.com/photos/person-gesturing-during-meeting-with-laptop-5QgIuuBxKwM?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
 :::
 
-## `readr::read_csv()` vs `read.csv()`
-
-## `tidyr::select()`
-
-## `dplyr::mutate()` and `dplyr::across()`
-
-## `dplyr::case_when()` vs `if + else if + else`
+## What we'll do:
 
 
-## Example
+```{r}
+#| label: read-dataframe
+library(tidyverse)
+path <- here("data", "nycflights13_random2000.csv")
+```
+
+- Compare `readr::read_csv()` and `read.csv()`
+- Look at the `{dplyr}` functions `select()`, `filter()` and `mutate()` and their helpers
+- Compare `case_when()` with a chain of conditionals
+- Chain functions with the pipe
+
+## `read_csv()`
+
+```{r}
+readr_csv <- readr::read_csv(path)
+readr_csv
+```
+
+## `read.csv()`
+
+```{r}
+base_csv <- read.csv(path)
+base_csv
+```
+
+## {.smaller}
+
+### Output type
+
+```{r}
+class(readr_csv)
+class(base_csv)
+```
+
+### Emtpy values
+
+```{r}
+nrow(na.omit(readr_csv))
+nrow(na.omit(base_csv))
+```
+
+## `select()` by name
+
+```{r}
+select(readr_csv, year)
+```
+
+## `select()` with pattern
+
+```{r}
+select(readr_csv, year, ends_with("time"))
+```
+
+## `select()` by type
+
+```{r}
+select(readr_csv, year, where(is.character))
+```
+
+## `select()` a `data.frame`
+
+```{r}
+select(base_csv, year, where(is.character))
+```
+
+## `filter()` on a simple condition
+
+```{r}
+# readr_csv[readr_csv$dep_delay > 60,]
+filter(readr_csv, dep_delay > 60)
+```
+
+## `filter()` combining conditions
+
+```{r}
+# readr_csv[readr_csv$dep_delay > 60 & readr_csv$arr_delay > 60,]
+filter(readr_csv, dep_delay > 60, arr_delay > 60)
+```
+
+## `mutate()` on one column
+
+::: callout-important
+`mutate()` modifies the column and returns the dataframe
+without overwriting it!
+:::
+
+```{r}
+# readr_csv$month <- month.name(readr_csv$month); readr_csv
+mutate(readr_csv, month = month.name[month])
+```
+
+## `mutate()` by pattern
+
+```{r}
+# readr_csv$carrier <- as.factor(readr_csv$carrier)
+# readr_csv$tailnum <- as.factor(readr_csv$tailnum)
+# ...
+mutate(readr_csv, across(where(is.character), as.factor))
+```
+
+## Let's categorize a continuous variable
+
+
+```{r}
+delay_categories <- c("Early", "On time", "Late")
+```
+
+Delay $x$       | Category
+--------------- | --------
+`NA`            | `NA`
+$x <= -30$      | "Early"
+$-30 < x <= 30$ | "On time"
+$x < -30$       | "Late"
+
+## Chain of conditionals
+
+```{r}
+for (i in seq_along(base_csv$dep_delay)) {
+  if (is.na(base_csv$dep_delay[[i]])) {
+    base_csv[i, "dep_delay_category"] <- NA
+  } else if (base_csv$dep_delay[[i]] <= -30) {
+    base_csv[i, "dep_delay_category"] <- delay_categories[[1]]
+  } else if (base_csv$dep_delay[[i]] <= 30) {
+    base_csv[i, "dep_delay_category"] <- delay_categories[[2]]
+  } else {
+    base_csv[i, "dep_delay_category"] <- delay_categories[[3]]
+  }
+}
+base_csv$dep_delay_category <- factor(base_csv$dep_delay_category, levels = delay_categories)
+table(base_csv$dep_delay_category)
+```
+
+## `case_when()`
+
+```{r}
+readr_csv <- mutate(
+  readr_csv,
+  dep_delay_category = factor(
+    case_when(
+      is.na(dep_delay) ~ NA,
+      dep_delay <= -30 ~ delay_categories[[1]],
+      dep_delay <= 30 ~ delay_categories[[2]],
+      TRUE ~ delay_categories[[3]]
+    ), levels = delay_categories
+  )
+)
+table(readr_csv$dep_delay_category)
+```
+
+## `filter()` + `select()`
+
+```{r}
+# readr_csv[readr_csv$dep_delay > 60, c("dep_time", "flight", "tailnum")]
+readr_csv |> 
+  filter(dep_delay > 60) |> 
+  select(dep_time, flight, tailnum)
+```
+
+## + `arrange()`
+
+```{r}
+readr_csv |> 
+  filter(dep_delay > 60) |> 
+  select(time_hour, flight, tailnum) |> 
+  arrange(time_hour)
+```
+
+## + `mutate()`
+
+```{r}
+readr_csv |> 
+  mutate(dep_delay_category = case_when(
+      is.na(dep_delay) ~ NA,
+      dep_delay <= -30 ~ delay_categories[[1]],
+      dep_delay <= 30 ~ delay_categories[[2]],
+      TRUE ~ delay_categories[[3]]
+    ) |> factor(levels=delay_categories)) |> 
+  filter(!is.na(dep_delay_category)) |> 
+  select(time_hour, dep_delay, dep_delay_category, flight) |> 
+  arrange(time_hour)
+```
+
+## Wrangling and assigning
+
+```{r}
+#| output-location: slide
+dataset <- readr_csv |> 
+  filter(!is.na(dep_delay), !is.na(arr_delay)) |> 
+  mutate(
+    month_name = month.name[month],
+    across(
+      ends_with("delay"),
+      ~ case_when(
+        is.na(.x) ~ NA,
+        .x <= -30 ~ delay_categories[[1]],
+        .x <= 30 ~ delay_categories[[2]],
+        TRUE ~ delay_categories[[3]]
+      ) |> factor(levels=delay_categories),
+      .names = "{.col}_cat"
+      ),
+    across(where(is.character), as.factor)
+    )
+dataset |> select(time_hour, contains("delay"))
+```
+
 
 ## The pipe and tidyverse: take-aways {background-image="img/unsplash/mika-baumeister-ideas.jpg" background-opacity="0.7"}
 
@@ -622,9 +820,166 @@ How do you combine the output of your scripts into the writing you have to provi
 Photo by <a href="https://unsplash.com/@headwayio?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Headway</a> on <a href="https://unsplash.com/photos/person-gesturing-during-meeting-with-laptop-5QgIuuBxKwM?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
 :::
 
-## Examples
 
-ADD SLIDES LATER
+# I/O
+
+- `{readr}`
+- File formats / extensions
+
+## Comma-separated values
+
+```{r}
+cat_file_name <- here("data", "flights_with_factors.csv")
+dataset |>
+  select(carrier, flight, month_name, time_hour, contains("delay")) |> 
+  write_csv(cat_file_name)
+readLines(cat_file_name, n = 10)
+```
+
+## `{readr}`
+
+```{r}
+read_csv(cat_file_name)
+```
+
+::: notes
+
+I have two more slides (hidden) about readr parsing columns
+and one comparing it to base R functions but it might be too much
+:::
+
+## Parsing columns {visibility="hidden"}
+
+```{r}
+spec_csv(cat_file_name)
+```
+
+## Parsing when reading {visibility="hidden"}
+
+```{r}
+#| code-line-numbers: "|2-4|5-7|8"
+read_csv(cat_file_name, col_types = list(
+  month_name = col_factor(levels = month.name),
+  dep_delay_cat = col_factor(levels = delay_categories, ordered = TRUE),
+  arr_delay_cat = col_factor(levels = delay_categories, ordered = TRUE),
+  dep_delay = "i",
+  arr_delay = "i",
+  time_hour = "T",
+  .default = "c")
+) |> head(5)
+
+```
+
+
+## X-separated values...
+
+:::: {.columns}
+
+::: {.column}
+
+Values separated by spaces (`readr::read_table()`)
+
+```
+col1 col2 col3
+1.5 2.2 3
+4 5 6
+7 8 9
+```
+:::
+
+::: {.column}
+
+**C**omma **s**eparated **v**alues (`readr::read_csv()`)
+
+```
+col1,col2,col3
+1.5,2.2,3
+4,5,6
+7,8,9
+```
+:::
+
+::::
+
+<hr>
+
+:::: {.columns}
+
+::: {.column}
+
+Values separated by semicolons (`readr::read_csv2()`)
+
+```
+col1;col2;col3
+1,5;2,2;3
+4;5;6
+7;8;9
+```
+:::
+
+::: {.column}
+
+**T**ab-**s**eparated **v**alues (`readr::read_tsv()`)
+
+```{r}
+#| echo: false
+#| results: asis
+cat("    col1\tcol2\tcol3\n")
+cat("    1,5\tsomething;semicolon\t3\n")
+cat("    text,with,commas\twha a a t\t6\n")
+cat("    7\t8\t9\n")
+```
+:::
+
+::::
+
+
+## .rds, .rda, .Rdata, other formats {.smaller}
+
+File type | Save | Open | Pros | Cons
+---- | ---- | ---- | ------ | -------
+.rda/.Rdata^[Outside of (data) packages.] | `save()` | `load()` | Save multiple R objects as they are | Only R can open it; modifies variables
+.rds | `saveRDS()` | `readRDS()` | Save single R object as it is | Only R can open it.
+.txt, .csv... | `write.csv()`... | `read.csv()`... | Plain text: interoperable | Not just any R object
+
+## Literate programming
+
+:::: {.columns}
+
+::: {.column width="30%"}
+
+- `{rmarkdown}`, `{bookdown}`...
+- [Quarto](https://quarto.org)
+
+:::
+
+::: {.column width="70%"}
+
+
+````
+---
+title: "Great code report"
+author: "A responsible researcher"
+---
+
+```{{r}}
+#| include: false
+library(here)
+library(readr)
+my_data <- read_csv("path/to/data")
+```
+
+I will show a dataset with `r knitr::inline_expr('nrow(my_data)')` rows.
+
+```{{r}}
+knitr::kable(my_data)
+```
+
+````
+
+:::
+
+::::
 
 ## I/O: take-aways {background-image="img/unsplash/mika-baumeister-ideas.jpg" background-opacity="0.7"}
 
