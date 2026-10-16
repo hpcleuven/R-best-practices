@@ -12,8 +12,9 @@ for (i in 1:length(df$dep_delay)) {
     df[i, "dep_delay_cat"] <- delay_categories[[3]]
   }
 }
-#> Error in eval(expr, envir, enclos): object 'delay_categories' not found
+#> Error:
+#> ! object 'delay_categories' not found
 delay_categories <- c("Early", "Kind of on time", "Late")
 ```
 
-<sup>Created on 2025-11-10 with [reprex v2.1.0](https://reprex.tidyverse.org)</sup>
+<sup>Created on 2026-10-16 with [reprex v2.1.1](https://reprex.tidyverse.org)</sup>

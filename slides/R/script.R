@@ -7,6 +7,7 @@ library(here)
 
 ## Make subset ====
 library(nycflights13) # flights dataset
+library(tidyverse)
 set.seed(1000)
 subset_flights <- flights |> sample_n(2000)
 

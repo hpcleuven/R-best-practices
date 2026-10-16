@@ -8,7 +8,7 @@ title-slide-attributes:
   data-background-size: contain
   data-background-position: bottom
 author: Mariana Montes
-date: today
+date: 2026-10-22
 execute:
   echo: true
 code-annotations: select
@@ -28,18 +28,32 @@ code-annotations: select
 
 # Projects
 
-## Discussion questions
+## Discussion questions {background-image="img/unsplash/headway-group-discussion.jpg" background-opacity="0.5"}
 
-1. Do you write scripts? Do you organize them in folders?
-	1. Do you use version control?
-	2. Do you back-up your scripts?
-2. Where do your scripts and data live?
-	1. Do you use absolute paths in their scripts?
-	2. Where does the input/output live in relation to the scripts?
-3. Do you work with others?
-	1. Do you share their code with others? With whom? How?
-	2. Do others share their code with you? Who? How?
+::: {.fragment .fade-in-then-out}
+Do you write scripts? Do you organize them in folders?
+:::
 
+::: {.fragment}
+Do you use version control? Do you back-up your scripts?
+:::
+
+::: {.fragment}
+Where do your scripts and data live? How does the script know that?
+:::
+
+::: {.fragment}
+Do you share their code with others? With whom? How?
+:::
+
+::: {.fragment}
+Do others share their code with you? Who? How?
+:::
+
+
+::: footer
+Photo by <a href="https://unsplash.com/@headwayio?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Headway</a> on <a href="https://unsplash.com/photos/person-gesturing-during-meeting-with-laptop-5QgIuuBxKwM?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+:::
 
 ## {.smaller}
 
@@ -194,16 +208,27 @@ reproducibility" (in Hadley Wickham's words).
 [`{renv}`](https://rstudio.github.io/renv/)
 :::
 		
-## Reflection
+## Projects: take-aways {background-image="img/unsplash/mika-baumeister-ideas.jpg" background-opacity="0.7"}
+
+::: footer
+Photo by <a href="https://unsplash.com/@kommumikation?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Mika Baumeister</a> on <a href="https://unsplash.com/photos/light-box-sign-with-motivational-text-Y_LgXwQEx2c?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+:::
 
 # Debugging
 
-## Discussion questions
+## Discussion questions {background-image="img/unsplash/headway-group-discussion.jpg" background-opacity="0.5"}
 
-1. What do you do when your code fails? Where do you search for answers?
-2. How do you look into your code to find the problematic part? Or do you send your whole script to AI?
-3. Do you write your own functions?
+::: {.fragment}
+What do you do when your code fails? Where do you search for answers?
+:::
 
+::: {.fragment}
+How do you look into your code to find the problematic part?
+:::
+
+::: {.fragment}
+Do you write your own functions?
+:::
 
 ## `{reprex}`: Minimal reproducible examples
 
@@ -314,27 +339,49 @@ environment (because you don't know what leftovers there are and how they can
 impact what you're doing next).
 :::
 
-## Reflection
+## Debugging: take-aways {background-image="img/unsplash/mika-baumeister-ideas.jpg" background-opacity="0.7"}
 
-?? added value to their current practices and how learning to debug may help write better code and understand R better
+::: footer
+Photo by <a href="https://unsplash.com/@kommumikation?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Mika Baumeister</a> on <a href="https://unsplash.com/photos/light-box-sign-with-motivational-text-Y_LgXwQEx2c?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+:::
 
 # Style
 
-## Discussion questions
+## Discussion questions {background-image="img/unsplash/headway-group-discussion.jpg" background-opacity="0.5"}
 
-1. Do you agree with others on naming style, spaces, punctuation...?
-2. Are you aware of any stylesheet for R code?
-3. Do you feel that others have a different way of writing R code than you? If so, does that affect you? Does that affect the way you can read/understand their code?
-	1. If someone wants to argue your preferences, what would you say?
+::: {.fragment .fade-in-then-out}
+Do you agree with others on naming style, spaces, punctuation...?
+:::
 
+::: {.fragment .fade-in-then-out}
+Are you aware of any stylesheet for R code?
+
+If someone wants to argue your preferences, what would you say?
+:::
+
+::: {.fragment}
+Do you feel that others have a different way of writing R code than you?
+
+If so, does that affect you? Does that affect the way you can read/understand their code?
+:::
+
+::: footer
+Photo by <a href="https://unsplash.com/@headwayio?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Headway</a> on <a href="https://unsplash.com/photos/person-gesturing-during-meeting-with-laptop-5QgIuuBxKwM?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+:::
 
 ## Naming: Best practices
 
+::: {.incremental}
 1. Beware of / avoid using existing names (e.g. `df`, `c`, `T`, `mean`)
 2. Avoid using dots (although Base R does use them)
 3. For files: stick to numbers, lowercase letters, `_` and `-` - beware of case!
 4. For variables: use lowercase letters, numbers and snake_case.
 4. Generally: variables = nouns; functions = verbs
+:::
+
+::: footer
+[Tidyverse styleguide](https://style.tidyverse.org/index.html)
+:::
 
 ## Punctuation best practices {.smaller .incremental}
 
@@ -361,6 +408,11 @@ impact what you're doing next).
 
 ::::
 
+::: footer
+[Tidyverse styleguide](https://style.tidyverse.org/index.html)
+:::
+
+
 ## Script with room for improvement
 
 
@@ -377,20 +429,9 @@ if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
 }
 ```
 
-## Suggested changes
+## Improved example {auto-animate=true}
 
-## 
-
-:::: {.columns}
-
-::: {.column width="50%"}
-
-### Before
-
-```{r}
-#| eval: false
-#| code-line-numbers: "|4|5|6,8|7"
-library(here)
+```r
 some_flights<-read.csv(here( 'data' , "nycflights13_random2000.csv"))
 some_flights$month_name=month.name[some_flights$month]
 for(i in 1 : length(some_flights$dep_delay)){
@@ -398,15 +439,61 @@ if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
 }
 ```
 
-:::
+## Improved example {auto-animate=true}
 
-::: {.column width="50%"}
+```r
+some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
+some_flights$month_name=month.name[some_flights$month]
+for(i in 1 : length(some_flights$dep_delay)){
+if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
+}
+```
 
-### After
+## Improved example {auto-animate=true}
 
-```{r}
-#| eval: false
-#| code-line-numbers: "|4|5|6,8|7"
+```r
+some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
+some_flights$month_name <- month.name[some_flights$month]
+for(i in 1 : length(some_flights$dep_delay)){
+if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
+}
+```
+
+## Improved example {auto-animate=true}
+
+```r
+some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
+some_flights$month_name <- month.name[some_flights$month]
+for (i in 1:length(some_flights$dep_delay)){
+if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
+}
+```
+
+## Improved example {auto-animate=true}
+
+```r
+some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
+some_flights$month_name <- month.name[some_flights$month]
+for (i in seq_along(some_flights$dep_delay)){
+if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
+}
+```
+
+## Improved example {auto-animate=true}
+
+```r
+some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
+some_flights$month_name <- month.name[some_flights$month]
+for (i in seq_along(some_flights$dep_delay)){
+  if (abs(i) > 30) {
+    print (some_flights $ dep_delay [ i ])
+  }
+}
+```
+
+## Improved example {auto-animate=true}
+
+```r
 some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
 some_flights$month_name <- month.name[some_flights$month]
 for (i in seq_along(some_flights$dep_delay)){
@@ -415,26 +502,84 @@ for (i in seq_along(some_flights$dep_delay)){
   }
 }
 ```
+
+
+## Improved example {auto-animate=true}
+
+```r
+some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
+some_flights$month_name <- month.name[some_flights$month]
+for (i in seq_along(some_flights$dep_delay)){
+  if (abs(i) > 30) {
+    print(some_flights$dep_delay[[i]])
+  }
+}
+```
+
+## 
+
+### Before
+
+```{r}
+#| eval: false
+library(here)
+some_flights<-read.csv(here( 'data' , "nycflights13_random2000.csv"))
+some_flights$month_name=month.name[some_flights$month]
+for(i in 1 : length(some_flights$dep_delay)){
+if(abs(i)>30){print (some_flights $ dep_delay [ i ])}
+}
+```
+
+### After
+
+```{r}
+#| eval: false
+library(here)
+some_flights <- read.csv(here("data", "nycflights13_random2000.csv"))
+some_flights$month_name <- month.name[some_flights$month]
+for (i in seq_along(some_flights$dep_delay)) {
+  if (abs(i) > 30) {
+    print(some_flights$dep_delay[[i]])
+  }
+}
+```
+
+## Style: take-aways {background-image="img/unsplash/mika-baumeister-ideas.jpg" background-opacity="0.7"}
+
+::: footer
+Photo by <a href="https://unsplash.com/@kommumikation?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Mika Baumeister</a> on <a href="https://unsplash.com/photos/light-box-sign-with-motivational-text-Y_LgXwQEx2c?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
 :::
-::::
-
-## Reflection
-
-Do you find one clearer than the other? Do you have specific preferences, and why?
-
-Now that you have heard my recommendations, if someone wants to argue your preferences, what would you say?
 
 # The pipe and other data-wrangling tricks
 
-## Discussion questions
+## Discussion questions {background-image="img/unsplash/headway-group-discussion.jpg" background-opacity="0.5"}
 
-1. Do you know what the pipe is in R/coding, what it is used for?
-2. Do you use the pipe?
-	1. If so, the tidyverse one from `{magrittr}` or the native one?
-	2. Do you have a preference? Which? Why?
-	3. If you do know about the pipe but don't use it, why?
-3. Do you use tidyverse packages (tibbles...)? Why (not)?
-	1. If yes, do you use `case_when()` or long conditionals? (Show example of the conditional)
+::: {.fragment .fade-in-then-out}
+Do you know what the pipe is in R/coding, what it is used for?
+:::
+
+::: {.fragment .fade-in-then-out}
+Do you use the pipe?
+
+1. If so, the tidyverse one from `{magrittr}` or the native one?
+
+2. Do you have a preference? Which? Why?
+
+3. If you do know about the pipe but don't use it, why?
+
+:::
+
+::: {.fragment}
+Do you use tidyverse packages (tibbles...)? Why (not)?
+:::
+
+::: {.fragment .fade-up}
+If yes, do you use `case_when()` or long conditionals? (Show example of the conditional)
+:::
+
+::: footer
+Photo by <a href="https://unsplash.com/@headwayio?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Headway</a> on <a href="https://unsplash.com/photos/person-gesturing-during-meeting-with-laptop-5QgIuuBxKwM?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+:::
 
 ## `readr::read_csv()` vs `read.csv()`
 
@@ -447,179 +592,45 @@ Now that you have heard my recommendations, if someone wants to argue your prefe
 
 ## Example
 
-## Reflection
+## The pipe and tidyverse: take-aways {background-image="img/unsplash/mika-baumeister-ideas.jpg" background-opacity="0.7"}
 
-1. What are the nicer things of tidyverse? What are the nicer things of base R?
-2. Why would you use the pipe? Why not?
-
+::: footer
+Photo by <a href="https://unsplash.com/@kommumikation?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Mika Baumeister</a> on <a href="https://unsplash.com/photos/light-box-sign-with-motivational-text-Y_LgXwQEx2c?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+:::
 
 # I/O
 
-## Discussion questions
+## Discussion questions {background-image="img/unsplash/headway-group-discussion.jpg" background-opacity="0.5"}
 
-1. What is the format of your input data?
-	2. What is the format of your output data?
-	3. Are the files plain text? Are they interoperable (can they be opened by different applications)?
-	4. How do you combine the output of your scripts into the writing you have to provide (papers, reports, presentations...)
-
-
-## Comma-separated values
-
-```{r}
-cat_file_name <- here("data", "flights_with_factors.csv")
-some_flights |>
-  select(carrier, flight, month_name, time_hour, contains("delay")) |> 
-  write_csv(cat_file_name)
-readLines(cat_file_name, n = 10)
-```
-
-## `{readr}`
-
-```{r}
-read_csv(cat_file_name)
-```
-
-::: notes
-
-I have two more slides (hidden) about readr parsing columns
-and one comparing it to base R functions but it might be too much
+::: {.fragment}
+What is the format of your input data?
 :::
 
-## Parsing columns {visibility="hidden"}
-
-```{r}
-spec_csv(cat_file_name)
-```
-
-## Parsing when reading {visibility="hidden"}
-
-```{r}
-#| code-line-numbers: "|3-5|6-8|9"
-delay_levels <- c("Early", "Kind of on time", "Late")
-read_csv(cat_file_name, col_types = list(
-  month_name = col_factor(levels = month.name),
-  dep_delay_cat = col_factor(levels = delay_levels, ordered = TRUE),
-  arr_delay_cat = col_factor(levels = delay_levels, ordered = TRUE),
-  dep_delay = "i",
-  arr_delay = "i",
-  time_hour = "T",
-  .default = "c")
-) |> head(5)
-
-```
-
-
-## X-separated values...
-
-:::: {.columns}
-
-::: {.column}
-
-Values separated by spaces (`readr::read_table()`)
-
-```
-col1 col2 col3
-1.5 2.2 3
-4 5 6
-7 8 9
-```
+::: {.fragment}
+What is the format of your output data?
 :::
 
-::: {.column}
-
-**C**omma **s**eparated **v**alues (`readr::read_csv()`)
-
-```
-col1,col2,col3
-1.5,2.2,3
-4,5,6
-7,8,9
-```
+::: {.fragment}
+Are the files plain text? Are they interoperable (can they be opened by different applications)?
 :::
 
-::::
-
-<hr>
-
-:::: {.columns}
-
-::: {.column}
-
-Values separated by semicolons (`readr::read_csv2()`)
-
-```
-col1;col2;col3
-1,5;2,2;3
-4;5;6
-7;8;9
-```
+::: {.fragment}
+How do you combine the output of your scripts into the writing you have to provide (papers, reports, presentations...)
 :::
 
-::: {.column}
-
-**T**ab-**s**eparated **v**alues (`readr::read_tsv()`)
-
-```{r}
-#| echo: false
-#| results: asis
-cat("    col1\tcol2\tcol3\n")
-cat("    1,5\tsomething;semicolon\t3\n")
-cat("    text,with,commas\twha a a t\t6\n")
-cat("    7\t8\t9\n")
-```
+::: footer
+Photo by <a href="https://unsplash.com/@headwayio?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Headway</a> on <a href="https://unsplash.com/photos/person-gesturing-during-meeting-with-laptop-5QgIuuBxKwM?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
 :::
 
-::::
+## Examples
 
+ADD SLIDES LATER
 
-## .rds, .rda, .Rdata, other formats {.smaller}
+## I/O: take-aways {background-image="img/unsplash/mika-baumeister-ideas.jpg" background-opacity="0.7"}
 
-File type | Save | Open | Pros | Cons
----- | ---- | ---- | ------ | -------
-.rda/.Rdata^[Outside of (data) packages.] | `save()` | `load()` | Save multiple R objects as they are | Only R can open it; modifies variables
-.rds | `saveRDS()` | `readRDS()` | Save single R object as it is | Only R can open it.
-.txt, .csv... | `write.csv()`... | `read.csv()`... | Plain text: interoperable | Not just any R object
-
-## Literate programming
-
-:::: {.columns}
-
-::: {.column width="30%"}
-
-- `{rmarkdown}`, `{bookdown}`...
-- [Quarto](https://quarto.org)
-
+::: footer
+Photo by <a href="https://unsplash.com/@kommumikation?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Mika Baumeister</a> on <a href="https://unsplash.com/photos/light-box-sign-with-motivational-text-Y_LgXwQEx2c?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
 :::
-
-::: {.column width="70%"}
-
-
-````
----
-title: "Great code report"
-author: "A responsible researcher"
----
-
-```{{r}}
-#| include: false
-library(here)
-library(readr)
-my_data <- read_csv("path/to/data")
-```
-
-I will show a dataset with `r knitr::inline_expr('nrow(my_data)')` rows.
-
-```{{r}}
-knitr::kable(my_data)
-```
-
-````
-
-:::
-
-::::
-
-## Reflection
 
 # References
 
