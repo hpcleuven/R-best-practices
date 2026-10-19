@@ -418,9 +418,7 @@ Photo by <a href="https://unsplash.com/@headwayio?utm_source=unsplash&utm_medium
 
 ```{r}
 #| eval: false
-#| code-line-numbers: "|4|5|6,8|7"
 library(here)
-i_am("index.qmd")
 
 some_flights<-read.csv(here( 'data' , "nycflights13_random2000.csv"))
 some_flights$month_name=month.name[some_flights$month]
@@ -771,15 +769,16 @@ readr_csv |>
 ```{r}
 #| output-location: slide
 dataset <- readr_csv |> 
+  select(-dep_delay_category) |> # from previous slides
   filter(!is.na(dep_delay), !is.na(arr_delay)) |> 
   mutate(
     month_name = month.name[month],
     across(
       ends_with("delay"),
-      ~ case_when(
-        is.na(.x) ~ NA,
-        .x <= -30 ~ delay_categories[[1]],
-        .x <= 30 ~ delay_categories[[2]],
+      \(delay) case_when(
+        is.na(delay) ~ NA,
+        delay <= -30 ~ delay_categories[[1]],
+        delay <= 30 ~ delay_categories[[2]],
         TRUE ~ delay_categories[[3]]
       ) |> factor(levels=delay_categories),
       .names = "{.col}_cat"

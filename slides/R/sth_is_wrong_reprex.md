@@ -17,4 +17,4 @@ for (i in 1:length(df$dep_delay)) {
 delay_categories <- c("Early", "Kind of on time", "Late")
 ```
 
-<sup>Created on 2026-10-16 with [reprex v2.1.1](https://reprex.tidyverse.org)</sup>
+<sup>Created on 2026-10-19 with [reprex v2.1.1](https://reprex.tidyverse.org)</sup>
