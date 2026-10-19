@@ -16,8 +16,6 @@ website:
         text: Home
       - href: slides/index.qmd
         text: Slides
-      - href: ssh-instructions/index.qmd
-        text: SSH key
 
 format:
   html:
